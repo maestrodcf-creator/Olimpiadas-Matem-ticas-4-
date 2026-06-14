@@ -518,37 +518,6 @@
 <!-- ═══════════════════════════════════════════════════════════
      SCREEN · CONFIG FIREBASE
 ═══════════════════════════════════════════════════════════ -->
-<div id="screen-config-firebase" class="screen">
-  <div class="card" style="max-width:500px">
-    <h2>⚙️ Configuración de Firebase</h2>
-    <p class="text-muted" style="margin-bottom:16px;font-size:0.85rem">
-      Pega aquí los datos de tu proyecto Firebase (Realtime Database). Solo necesitas hacerlo una vez — se guardan en el navegador.
-    </p>
-    <label>API Key</label>
-    <input id="cfg-apiKey" placeholder="AIzaSy..." />
-    <label>Auth Domain</label>
-    <input id="cfg-authDomain" placeholder="tu-proyecto.firebaseapp.com" />
-    <label>Database URL</label>
-    <input id="cfg-databaseURL" placeholder="https://tu-proyecto-default-rtdb.firebaseio.com" />
-    <label>Project ID</label>
-    <input id="cfg-projectId" placeholder="tu-proyecto" />
-    <label>App ID</label>
-    <input id="cfg-appId" placeholder="1:123:web:abc" />
-    <div class="divider"></div>
-    <div class="gap-10">
-      <button class="btn btn-gold" onclick="saveFirebaseConfig()">💾 Guardar y conectar</button>
-      <button class="btn btn-outline" onclick="goto('screen-home')">← Volver</button>
-    </div>
-    <div class="divider"></div>
-    <p class="text-muted" style="font-size:0.78rem">
-      <strong style="color:var(--gold)">Cómo obtener estos datos:</strong><br>
-      1. Ve a <a href="https://console.firebase.google.com" target="_blank" style="color:var(--mint)">console.firebase.google.com</a><br>
-      2. Crea un proyecto → Activa Realtime Database (modo test)<br>
-      3. En Configuración del proyecto → Tu app web → SDK config<br>
-      4. Copia cada campo aquí
-    </p>
-  </div>
-</div>
 
 <!-- ═══════════════════════════════════════════════════════════
      SCREEN · ALUMNO JOIN
