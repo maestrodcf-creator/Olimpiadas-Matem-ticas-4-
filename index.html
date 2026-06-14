@@ -513,15 +513,6 @@
       <h3>Práctica</h3>
       <p>Entrena en solitario</p>
     </div>
-    <div class="home-option" onclick="goto('screen-config-firebase')">
-      <span class="icon">⚙️</span>
-      <h3>Configurar</h3>
-      <p>Ajustes de Firebase</p>
-    </div>
-  </div>
-  <p class="text-muted text-center" style="max-width:360px">
-    Primera vez · Toca ⚙️ Configurar para conectar con Firebase
-  </p>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -953,13 +944,21 @@ let practiceTimer = null;
 let practiceTimeLeft = 30;
 
 // ─────────────────────────────────────────────────────────────
-// FIREBASE INIT
+// FIREBASE INIT (config fija — ningún dispositivo necesita configurar nada)
 // ─────────────────────────────────────────────────────────────
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyB8s3u_FSLZ3IIKZNmjBZdYmvj91zUNEQ0",
+  authDomain:        "olimpiadas-mate-4.firebaseapp.com",
+  databaseURL:       "https://olimpiadas-mate-4-default-rtdb.firebaseio.com",
+  projectId:         "olimpiadas-mate-4",
+  storageBucket:     "olimpiadas-mate-4.firebasestorage.app",
+  messagingSenderId: "569445798924",
+  appId:             "1:569445798924:web:2ce69ab035ce2a89df0a29"
+};
+
 function loadFirebase() {
-  const cfg = JSON.parse(localStorage.getItem('fb_config') || 'null');
-  if (!cfg) return false;
   try {
-    const app = initializeApp(cfg, cfg.projectId);
+    const app = initializeApp(FIREBASE_CONFIG, "olimpiadas");
     db = getDatabase(app);
     return true;
   } catch(e) {
@@ -968,21 +967,8 @@ function loadFirebase() {
 }
 
 window.saveFirebaseConfig = function() {
-  const cfg = {
-    apiKey:      document.getElementById('cfg-apiKey').value.trim(),
-    authDomain:  document.getElementById('cfg-authDomain').value.trim(),
-    databaseURL: document.getElementById('cfg-databaseURL').value.trim(),
-    projectId:   document.getElementById('cfg-projectId').value.trim(),
-    appId:       document.getElementById('cfg-appId').value.trim(),
-  };
-  if (!cfg.apiKey || !cfg.databaseURL) { showToast("⚠️ Rellena al menos API Key y Database URL"); return; }
-  localStorage.setItem('fb_config', JSON.stringify(cfg));
-  if (loadFirebase()) {
-    showToast("✅ Firebase conectado");
-    goto('screen-home');
-  } else {
-    showToast("❌ Error al conectar. Revisa los datos");
-  }
+  showToast("✅ Firebase ya está configurado");
+  goto('screen-home');
 };
 
 // ─────────────────────────────────────────────────────────────
@@ -1165,8 +1151,7 @@ window.endPractice = function() {
 window.createSession = function() {
   if (!db) {
     if (!loadFirebase()) {
-      showToast("⚠️ Configura Firebase primero (⚙️ Configurar)");
-      goto('screen-config-firebase');
+      showToast("❌ Error de conexión con Firebase");
       return;
     }
   }
@@ -1364,7 +1349,7 @@ window.downloadCSV = function() {
 window.joinGame = function() {
   if (!db) {
     if (!loadFirebase()) {
-      showToast("⚠️ El docente debe configurar Firebase primero");
+      showToast("❌ Error de conexión. Comprueba el PIN");
       return;
     }
   }
@@ -1554,15 +1539,6 @@ window.leaveGame = function() {
 // ─────────────────────────────────────────────────────────────
 loadFirebase();
 
-// Pre-fill config fields if already saved
-const saved = JSON.parse(localStorage.getItem('fb_config') || 'null');
-if (saved) {
-  document.getElementById('cfg-apiKey').value     = saved.apiKey     || '';
-  document.getElementById('cfg-authDomain').value = saved.authDomain || '';
-  document.getElementById('cfg-databaseURL').value= saved.databaseURL|| '';
-  document.getElementById('cfg-projectId').value  = saved.projectId  || '';
-  document.getElementById('cfg-appId').value      = saved.appId      || '';
-}
 </script>
 </body>
 </html>
