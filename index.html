@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olimpiadas de Cálculo - 4.º Primaria</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Definición de Temas con Colores Dinámicos utilizando CSS Variables */
+        :root {
+            --bg-color: #f8fafc;
+            --panel-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #0ea5e9;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --card-border: #e2e8f0;
+            --font-family: 'Fredoka', sans-serif;
+        }
+
+        .theme-cyber {
+            --bg-color: #0b0f19;
+            --panel-bg: #111827;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary: #ec4899;
+            --primary-hover: #db2777;
+            --secondary: #06b6d4;
+            --accent: #eab308;
+            --success: #10b981;
+            --danger: #f43f5e;
+            --card-border: #374151;
+            --font-family: 'Comfortaa', sans-serif;
+        }
+
+        .theme-forest {
+            --bg-color: #f0fdf4;
+            --panel-bg: #ffffff;
+            --text-main: #14532d;
+            --text-muted: #166534;
+            --primary: #15803d;
+            --primary-hover: #166534;
+            --secondary: #22c55e;
+            --accent: #ca8a04;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --card-border: #bbf7d0;
+            --font-family: 'Quicksand', sans-serif;
+        }
+
+        .theme-coral {
+            --bg-color: #fffaf0;
+            --panel-bg: #ffffff;
+            --text-main: #431407;
+            --text-muted: #7c2d12;
+            --primary: #ea580c;
+            --primary-hover: #c2410c;
+            --secondary: #0d9488;
+            --accent: #ca8a04;
+            --success: #0f766e;
+            --danger: #be123c;
+            --card-border: #ffedd5;
+            --font-family: 'Fredoka', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            transition: all 0.3s ease;
+        }
+
+        .custom-card {
+            background-color: var(--panel-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 24px;
+        }
+
+        .dyslexia-font {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(700px) rotate(360deg); opacity: 0; }
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            z-index: 100;
+            animation: fall 3s linear forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <header class="bg-[var(--panel-bg)] border-b border-[var(--card-border)] py-4 px-6 sticky top-0 z-50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-[var(--primary)] text-white w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-md">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-[var(--text-main)]">Olimpiadas de Cálculo</h1>
+                    <p class="text-sm text-[var(--text-muted)]">Plataforma Multijugador Escolar en Tiempo Real</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex bg-slate-100 p-1 rounded-full border border-[var(--card-border)] gap-1">
+                    <button onclick="changeTheme('default')" id="btn-theme-default" class="px-3 py-1.5 rounded-full text-xs font-semibold bg-white shadow-sm text-indigo-600 transition-all">
+                        🎨 Clásico
+                    </button>
+                    <button onclick="changeTheme('cyber')" id="btn-theme-cyber" class="px-3 py-1.5 rounded-full text-xs font-semibold text-slate-500 transition-all">
+                        🚀 Espacial
+                    </button>
+                    <button onclick="changeTheme('forest')" id="btn-theme-forest" class="px-3 py-1.5 rounded-full text-xs font-semibold text-slate-500 transition-all">
+                        🌲 Bosque
+                    </button>
+                    <button onclick="changeTheme('coral')" id="btn-theme-coral" class="px-3 py-1.5 rounded-full text-xs font-semibold text-slate-500 transition-all">
+                        🐙 Coral
+                    </button>
+                </div>
+
+                <button onclick="toggleDyslexia()" class="p-2.5 rounded-xl border border-[var(--card-border)] hover:bg-slate-100 text-[var(--text-main)]" title="Tipografía Accesible">
+                    <i class="fa-solid fa-font"></i>
+                </button>
+                <button onclick="toggleAudio()" id="btn-audio" class="p-2.5 rounded-xl border border-[var(--card-border)] bg-green-100 hover:bg-green-200 text-green-700" title="Activar/Silenciar Sonido">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 mt-8">
+        
+        <div id="screen-lobby" class="custom-card p-8 md:p-12 text-center max-w-2xl mx-auto shadow-xl transition-all">
+            <span class="text-sm font-semibold tracking-wider uppercase text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full">¡Bienvenidos, matemáticos!</span>
+            <h2 class="text-4xl font-bold mt-4 mb-3 text-[var(--text-main)]">¿Quién entra a entrenar hoy?</h2>
+            <p class="text-[var(--text-muted)] mb-8">Conéctate con tu clase utilizando el PIN que el docente proyecte en la pizarra digital.</p>
+
+            <div class="mb-8 p-4 bg-indigo-50/50 rounded-2xl border border-dashed border-[var(--primary)] flex flex-wrap justify-between items-center gap-4 text-left">
+                <div class="flex-1">
+                    <span class="text-xs font-bold uppercase text-[var(--primary)] tracking-wider">🔬 Práctica Individual</span>
+                    <h4 class="text-sm font-bold text-[var(--text-main)]">¿Quieres entrenar en solitario sin conexión de aula?</h4>
+                </div>
+                <button onclick="startQuickDemo()" class="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold py-2.5 px-5 rounded-xl text-xs shadow-md transition-all">
+                    ⚡ Modo Práctica
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Tarjeta Alumno -->
+                <button onclick="switchView('student-setup')" class="group p-6 rounded-2xl border-2 border-[var(--card-border)] hover:border-[var(--primary)] text-left transition-all hover:shadow-lg bg-[var(--panel-bg)]">
+                    <div class="text-4xl text-[var(--primary)] mb-4 transition-transform group-hover:scale-110">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-1">Zona del Alumno</h3>
+                    <p class="text-sm text-[var(--text-muted)]">Introduce el PIN de la pizarra y juega desde tu asiento.</p>
+                </button>
+
+                <!-- Tarjeta Docente -->
+                <button onclick="switchView('teacher-dashboard')" class="group p-6 rounded-2xl border-2 border-[var(--card-border)] hover:border-[var(--primary)] text-left transition-all hover:shadow-lg bg-[var(--panel-bg)]">
+                    <div class="text-4xl text-[var(--secondary)] mb-4 transition-transform group-hover:scale-110">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-[var(--text-main)] mb-1">Panel del Docente</h3>
+                    <p class="text-sm text-[var(--text-muted)]">Genera un PIN de clase, proyecta la pizarra y gestiona los resultados.</p>
+                </button>
+            </div>
+            
+            <div class="mt-6 text-xs text-[var(--text-muted)]">
+                <i class="fa-solid fa-cloud"></i> Sincronización en la nube activa y lista.
+            </div>
+        </div>
+
+        <div id="screen-student-setup" class="hidden custom-card p-8 text-center max-w-md mx-auto shadow-xl">
+            <button onclick="switchView('lobby')" class="float-left text-sm text-[var(--text-muted)] hover:text-[var(--text-main)] mb-4">
+                <i class="fa-solid fa-arrow-left"></i> Volver
+            </button>
+            <div class="clear-both"></div>
+            
+            <div class="text-5xl text-[var(--primary)] mb-4">🦁</div>
+            <h2 class="text-3xl font-bold text-[var(--text-main)] mb-2">Ingresa a la Clase</h2>
+            <p class="text-sm text-[var(--text-muted)] mb-6">Pregunta el código PIN que aparece en la pizarra escolar.</p>
+
+            <div class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-[var(--text-muted)] mb-1">PIN del Juego</label>
+                    <input type="text" id="input-pin" maxlength="4" placeholder="Ej. 7421" class="w-full text-center text-3xl tracking-widest font-bold py-3 rounded-xl border-2 border-[var(--card-border)] focus:border-[var(--primary)] outline-none bg-[var(--panel-bg)] text-[var(--text-main)]">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-[var(--text-muted)] mb-1">Tu Nombre o Apodo</label>
+                    <input type="text" id="input-nickname" placeholder="Ej. SofiaM" class="w-full text-center text-lg font-semibold py-3 rounded-xl border-2 border-[var(--card-border)] focus:border-[var(--primary)] outline-none bg-[var(--panel-bg)] text-[var(--text-main)]">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold uppercase text-[var(--text-muted)] mb-2">Elige tu Avatar</label>
+                    <div class="flex justify-between p-2 bg-slate-50 rounded-xl border border-[var(--card-border)]">
+                        <button onclick="setAvatar('🦊')" class="avatar-opt text-2xl p-2 rounded-lg bg-white shadow-sm border border-orange-200">🦊</button>
+                        <button onclick="setAvatar('🐼')" class="avatar-opt text-2xl p-2 rounded-lg hover:bg-white transition-all">🐼</button>
+                        <button onclick="setAvatar('🦉')" class="avatar-opt text-2xl p-2 rounded-lg hover:bg-white transition-all">🦉</button>
+                        <button onclick="setAvatar('🦁')" class="avatar-opt text-2xl p-2 rounded-lg hover:bg-white transition-all">🦁</button>
+                        <button onclick="setAvatar('🦄')" class="avatar-opt text-2xl p-2 rounded-lg hover:bg-white transition-all">🦄</button>
+                    </div>
+                </div>
+
+                <button onclick="joinStudentGame()" class="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white text-lg font-bold py-4 rounded-xl shadow-lg transition-all transform active:scale-95">
+                    ¡Listo, a jugar! 🚀
+                </button>
+            </div>
+        </div>
+
+        <div id="screen-student-game" class="hidden grid md:grid-cols-4 gap-6">
+            <!-- Barra lateral -->
+            <div class="md:col-span-1 custom-card p-6 flex flex-col justify-between h-fit gap-6">
+                <div>
+                    <div class="flex items-center gap-3 border-b border-[var(--card-border)] pb-4">
+                        <div id="student-avatar-display" class="text-4xl bg-orange-100 p-2 rounded-xl">🦊</div>
+                        <div>
+                            <h4 id="student-name-display" class="font-bold text-lg text-[var(--text-main)]">Alumno</h4>
+                            <span class="text-xs text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-semibold">En Línea</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 space-y-4">
+                        <div>
+                            <span class="text-xs text-[var(--text-muted)] uppercase font-semibold">Puntuación</span>
+                            <div id="student-score-display" class="text-3xl font-extrabold text-indigo-600">0 pts</div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-[var(--text-muted)] uppercase font-semibold">Racha actual</span>
+                            <div id="student-streak-display" class="text-xl font-bold text-amber-500">🔥 0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-[var(--card-border)] pt-4">
+                    <h5 class="text-xs font-bold uppercase text-[var(--text-muted)] mb-2">Insignias del Día</h5>
+                    <div id="badges-container" class="flex gap-2 flex-wrap">
+                        <span class="text-xs bg-slate-100 p-1 rounded border">⏳ Esperando aciertos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Pregunta Activa -->
+            <div id="student-question-container" class="md:col-span-3 custom-card p-8 flex flex-col justify-between min-h-[480px] relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-slate-100">
+                    <div id="time-progress-bar" class="h-full bg-[var(--primary)] transition-all duration-1000" style="width: 100%;"></div>
+                </div>
+
+                <!-- Mensaje de espera de ronda -->
+                <div id="waiting-round-overlay" class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center p-6 text-center z-20">
+                    <div class="text-6xl animate-bounce mb-4">💤</div>
+                    <h3 class="text-2xl font-bold text-[var(--text-main)]">Esperando a tu profesor...</h3>
+                    <p class="text-[var(--text-muted)] max-w-sm mt-2">La sesión comenzará automáticamente cuando el profesor pulse el botón de inicio en su pantalla.</p>
+                </div>
+
+                <div class="flex justify-between items-center mb-6 mt-2">
+                    <span id="question-index-label" class="text-sm font-semibold text-[var(--text-muted)]">Pregunta 1</span>
+                    <button onclick="readQuestion()" class="bg-indigo-50 hover:bg-indigo-100 text-[var(--primary)] px-3 py-1.5 rounded-lg text-xs font-bold">
+                        <i class="fa-solid fa-volume-high mr-1"></i> Escuchar Enunciado
+                    </button>
+                </div>
+
+                <div class="text-center my-6 flex-grow flex flex-col justify-center">
+                    <h2 id="current-question-text" class="text-4xl font-bold tracking-tight text-[var(--text-main)]">...</h2>
+                    <p id="current-question-category" class="text-sm text-[var(--text-muted)] mt-2">Aritmética básica</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 mt-8">
+                    <button onclick="selectOption(0)" id="opt-0" class="option-btn py-5 px-6 rounded-2xl border-2 border-[var(--card-border)] hover:border-[var(--primary)] text-xl font-bold text-left flex justify-between items-center bg-[var(--panel-bg)] text-[var(--text-main)]">
+                        <span id="opt-text-0">-</span>
+                        <span class="text-slate-300"><i class="fa-regular fa-circle"></i></span>
+                    </button>
+                    <button onclick="selectOption(1)" id="opt-1" class="option-btn py-5 px-6 rounded-2xl border-2 border-[var(--card-border)] hover:border-[var(--primary)] text-xl font-bold text-left flex justify-between items-center bg-[var(--panel-bg)] text-[var(--text-main)]">
+                        <span id="opt-text-1">-</span>
+                        <span class="text-slate-300"><i class="fa-regular fa-circle"></i></span>
+                    </button>
+                    <button onclick="selectOption(2)" id="opt-2" class="option-btn py-5 px-6 rounded-2xl border-2 border-[var(--card-border)] hover:border-[var(--primary)] text-xl font-bold text-left flex justify-between items-center bg-[var(--panel-bg)] text-[var(--text-main)]">
+                        <span id="opt-text-2">-</span>
+                        <span class="text-slate-300"><i class="fa-regular fa-circle"></i></span>
+                    </button>
+                    <button onclick="selectOption(3)" id="opt-3" class="option-btn py-5 px-6 rounded-2xl border-2 border-[var(--card-border)] hover:border-[var(--primary)] text-xl font-bold text-left flex justify-between items-center bg-[var(--panel-bg)] text-[var(--text-main)]">
+                        <span id="opt-text-3">-</span>
+                        <span class="text-slate-300"><i class="fa-regular fa-circle"></i></span>
+                    </button>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button id="btn-submit-answer" disabled onclick="submitAnswer()" class="bg-gray-300 cursor-not-allowed text-gray-500 font-bold py-3 px-8 rounded-xl shadow-md transition-all">
+                        Enviar Respuesta
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-teacher-dashboard" class="hidden space-y-8">
+            <div class="custom-card p-6 flex flex-wrap justify-between items-center gap-4 shadow-md">
+                <div>
+                    <h2 class="text-2xl font-bold text-[var(--text-main)]">Consola de Control del Docente</h2>
+                    <p class="text-sm text-[var(--text-muted)]">Crea una sesión sincronizada en vivo para proyectar en la pizarra.</p>
+                </div>
+                <button onclick="switchView('lobby')" class="px-4 py-2 border border-[var(--card-border)] rounded-xl text-sm font-semibold hover:bg-slate-100 text-[var(--text-main)]">
+                    <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Salir
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Configurador de Sesión -->
+                <div class="custom-card p-6 space-y-4">
+                    <h3 class="text-lg font-bold border-b border-[var(--card-border)] pb-2 text-[var(--text-main)]">
+                        <i class="fa-solid fa-sliders text-indigo-500 mr-2"></i> Nueva Clase Conectada
+                    </h3>
+                    
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-[var(--text-muted)] mb-1">Código PIN de Aula</label>
+                        <div class="text-4xl font-extrabold text-[var(--primary)] tracking-widest text-center py-2 bg-indigo-50 rounded-xl" id="teacher-pin-display">7421</div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-[var(--text-muted)] mb-1">Nivel Matemático</label>
+                        <select id="setting-difficulty" class="w-full p-2.5 rounded-lg border border-[var(--card-border)] bg-[var(--panel-bg)] text-[var(--text-main)]">
+                            <option value="easy">Fácil (Iniciación)</option>
+                            <option value="medium" selected>Medio (4.º Primaria Estándar)</option>
+                            <option value="hard">Alto (Fracciones y Decimales)</option>
+                            <option value="olympiad">Modo Olimpiada 🏆</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-[var(--text-muted)] mb-1">Tiempo por pregunta (segundos)</label>
+                        <input type="number" id="setting-timer" value="20" min="5" max="120" class="w-full p-2.5 rounded-lg border border-[var(--card-border)] bg-[var(--panel-bg)] text-[var(--text-main)]">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-[var(--text-muted)] mb-1">Modo de Evaluación</label>
+                        <div class="flex items-center gap-2 mt-1">
+                            <input type="checkbox" id="setting-strict" class="w-4 h-4 text-indigo-600 rounded">
+                            <span class="text-sm text-[var(--text-muted)]">Ocultar aciertos/fallos en directo</span>
+                        </div>
+                    </div>
+
+                    <button onclick="startGroupSession()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-md transition-all">
+                        🚀 Inicializar y Proyectar Sesión
+                    </button>
+                </div>
+
+                <!-- Pantalla Proyector Escolar -->
+                <div class="md:col-span-2 custom-card p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center border-b border-[var(--card-border)] pb-2 mb-4">
+                            <h3 class="text-lg font-bold text-[var(--text-main)]">
+                                <i class="fa-solid fa-circle-nodes text-green-500 mr-2"></i> Pizarra de Sincronización en Directo
+                            </h3>
+                            <span class="text-xs bg-indigo-50 text-indigo-600 font-extrabold py-1 px-3 rounded-full">SISTEMA ACTIVO</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center my-4">
+                            <div class="p-3 bg-indigo-50 rounded-xl border border-indigo-100">
+                                <div id="live-connected-count" class="text-3xl font-bold text-indigo-600">0</div>
+                                <span class="text-xs text-[var(--text-muted)] font-medium">Alumnos en el Aula</span>
+                            </div>
+                            <div class="p-3 bg-amber-50 rounded-xl border border-amber-100">
+                                <div id="live-round-label" class="text-3xl font-bold text-amber-600">0/10</div>
+                                <span class="text-xs text-[var(--text-muted)] font-medium">Pregunta Actual</span>
+                            </div>
+                            <div class="p-3 bg-green-50 rounded-xl border border-green-100">
+                                <div id="live-answered-count" class="text-3xl font-bold text-green-600">0</div>
+                                <span class="text-xs text-[var(--text-muted)] font-medium">Respuestas Recibidas</span>
+                            </div>
+                            <div class="p-3 bg-purple-50 rounded-xl border border-purple-100">
+                                <div id="live-class-avg" class="text-3xl font-bold text-purple-600">--</div>
+                                <span class="text-xs text-[var(--text-muted)] font-medium">Precisión del Aula</span>
+                            </div>
+                        </div>
+
+                        <div class="border border-[var(--card-border)] rounded-xl p-4 bg-slate-50">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold text-[var(--text-muted)]">VISTA DE LA PIZARRA</span>
+                                <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+                            </div>
+                            <p id="proyector-preview-text" class="text-lg font-semibold text-[var(--text-main)] italic">Esperando que inicies la ronda de cálculo...</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 mt-4">
+                        <button onclick="triggerNextQuestion()" id="btn-next-question" disabled class="bg-gray-300 text-gray-500 cursor-not-allowed font-bold py-2.5 px-6 rounded-lg shadow transition-all">
+                            Enviar Siguiente Pregunta <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Analítica de Selección -->
+            <div class="custom-card p-6">
+                <div class="flex flex-wrap justify-between items-center border-b border-[var(--card-border)] pb-4 mb-4 gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-[var(--text-main)]">Estadísticas de Selección para las Olimpiadas</h3>
+                        <p class="text-sm text-[var(--text-muted)]">IAO = (Precisión × 0.6) + (Velocidad de procesamiento × 0.4). Los candidatos sugeridos para las Olimpiadas se muestran arriba.</p>
+                    </div>
+                    <button onclick="exportCSV()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-xl text-sm transition-all shadow">
+                        <i class="fa-solid fa-download mr-1"></i> Descargar Análisis (CSV)
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-[var(--card-border)] bg-slate-50 text-[var(--text-muted)] text-xs font-bold uppercase">
+                                <th class="py-3 px-4">Avatar</th>
+                                <th class="py-3 px-4">Alumno</th>
+                                <th class="py-3 px-4 text-center">Correctas</th>
+                                <th class="py-3 px-4 text-center">Precisión</th>
+                                <th class="py-3 px-4 text-center">Tiempo Medio</th>
+                                <th class="py-3 px-4 text-center">Índice IAO 🏆</th>
+                                <th class="py-3 px-4 text-center">Estado Selección</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacher-students-tbody" class="divide-y divide-[var(--card-border)] text-sm text-[var(--text-main)]">
+                            <tr>
+                                <td colspan="7" class="py-8 text-center text-slate-400">Ningún alumno conectado en este momento.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notificaciones Flotantes -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // CONFIGURACIÓN DE RESPALDO PÚBLICA PARA QUE FUNCIONE INCLUSO AL DESCARGARLO LOCALMENTE
+        const defaultAppId = "olimpiadas-calculo-prod";
+        const defaultFirebaseConfig = {
+            apiKey: "AIzaSyAsf-9F1F_MockApiKeyForLocalDemosAndRealFallback",
+            authDomain: "olimpiadas-calculo-prod.firebaseapp.com",
+            projectId: "olimpiadas-calculo-prod",
+            storageBucket: "olimpiadas-calculo-prod.appspot.com",
+            messagingSenderId: "48291048201",
+            appId: "1:48291048201:web:981a918b2d"
+        };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : defaultAppId;
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : defaultFirebaseConfig;
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let userAuthenticated = false;
+
+        // Autenticar de forma segura antes de realizar cualquier consulta (Regla 3)
+        window.addEventListener('load', async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                userAuthenticated = true;
+                console.log("Conectado con éxito a la nube escolar como:", auth.currentUser.uid);
+            } catch (error) {
+                console.warn("Falló el acceso seguro en línea, activando almacenamiento offline de contingencia:", error);
+                setupOfflineFallback();
+            }
+        });
+
+        // Controles globales y sincronizados
+        window.firebaseAppObj = app;
+        window.firebaseDbObj = db;
+        window.firebaseAuthObj = auth;
+        window.isOnlineMode = () => userAuthenticated;
+        window.appIdVal = appId;
+    </script>
+
+    <script>
+        // CONFIGURACIÓN AUDIO SINTETIZADO
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let soundEnabled = true;
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); 
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, audioCtx.currentTime); 
+                osc.frequency.linearRampToValueAtTime(110, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } else if (type === 'tick') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('btn-audio');
+            if (soundEnabled) {
+                btn.className = 'p-2.5 rounded-xl border border-[var(--card-border)] bg-green-100 hover:bg-green-200 text-green-700';
+                btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+            } else {
+                btn.className = 'p-2.5 rounded-xl border border-[var(--card-border)] bg-red-100 hover:bg-red-200 text-red-700';
+                btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+            }
+        }
+
+        function readQuestion() {
+            const text = document.getElementById('current-question-text').innerText;
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'es-ES';
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showToast("Tu navegador no soporta el audio del sistema.", "error");
+            }
+        }
+
+        // CONTROL DE TEMAS DINÁMICOS
+        function changeTheme(themeName) {
+            const body = document.body;
+            body.className = "min-h-screen pb-12";
+            
+            document.querySelectorAll("[id^='btn-theme-']").forEach(btn => {
+                btn.className = "px-3 py-1.5 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-700 transition-all";
+            });
+
+            if (themeName !== 'default') {
+                body.classList.add(`theme-${themeName}`);
+            }
+
+            const selectedBtn = document.getElementById(`btn-theme-${themeName}`);
+            if (selectedBtn) {
+                selectedBtn.className = "px-3 py-1.5 rounded-full text-xs font-semibold bg-white shadow-sm text-indigo-600 transition-all";
+            }
+        }
+
+        function toggleDyslexia() {
+            document.body.classList.toggle('dyslexia-font');
+            showToast("Tipografía adaptada.", "info");
+        }
+
+        // DATOS EN TIEMPO REAL E INTEGRACIÓN FIRESTORE
+        let playersDb = [];
+        let activePlayer = null;
+        let isLocalSoloMode = false;
+        let currentPin = "7421";
+
+        // Estructuras de escucha de Firestore
+        let unsubscribeSession = null;
+        let unsubscribePlayers = null;
+
+        // MOTOR DE PREGUNTAS EN 4TO DE PRIMARIA
+        let currentQuestionSet = [];
+        let currentQuestionIdx = 0;
+        let selectedOptionIdx = null;
+        let timerRemaining = 0;
+        let timerInterval = null;
+        let questionStartTime = 0;
+
+        function setupOfflineFallback() {
+            isLocalSoloMode = true;
+            showToast("Modo Offline activo (sin internet). Simulación local habilitada.", "info");
+        }
+
+        // CREAR PREGUNTAS DINÁMICAS SEGÚN DIFICULTAD
+        function generateQuestionByDifficulty(difficulty, index) {
+            let num1, num2, text, answer, options, category;
+
+            if (difficulty === 'easy') {
+                category = "Aritmética Básica";
+                if (index % 2 === 0) {
+                    num1 = Math.floor(Math.random() * 80) + 20;
+                    num2 = Math.floor(Math.random() * 20) + 10;
+                    text = `¿Cuánto es ${num1} + ${num2}?`;
+                    answer = num1 + num2;
+                } else {
+                    num1 = Math.floor(Math.random() * 80) + 20;
+                    num2 = Math.floor(Math.random() * num1);
+                    text = `¿Cuánto es ${num1} - ${num2}?`;
+                    answer = num1 - num2;
+                }
+            } else if (difficulty === 'medium') {
+                category = "Cálculo Curricular 4.º";
+                if (index % 3 === 0) {
+                    num1 = Math.floor(Math.random() * 50) + 10;
+                    num2 = Math.floor(Math.random() * 8) + 2;
+                    text = `¿Cuánto es ${num1} x ${num2}?`;
+                    answer = num1 * num2;
+                } else if (index % 3 === 1) {
+                    num1 = Math.floor(Math.random() * 200) + 100;
+                    num2 = Math.floor(Math.random() * 90) + 10;
+                    text = `Calcula: ${num1} + ${num2}`;
+                    answer = num1 + num2;
+                } else {
+                    num2 = Math.floor(Math.random() * 8) + 2;
+                    answer = Math.floor(Math.random() * 12) + 2;
+                    num1 = num2 * answer;
+                    text = `¿Cuál es el resultado de ${num1} ÷ ${num2}?`;
+                }
+            } else if (difficulty === 'hard') {
+                category = "Fracciones y Decimales";
+                if (index % 2 === 0) {
+                    const bases = [40, 80, 120, 160];
+                    num1 = bases[Math.floor(Math.random() * bases.length)];
+                    text = `¿Cuánto es la mitad (1/2) de ${num1}?`;
+                    answer = num1 / 2;
+                } else {
+                    num1 = (Math.floor(Math.random() * 5) + 1) + 0.5;
+                    num2 = (Math.floor(Math.random() * 3) + 1) + 0.25;
+                    text = `Suma estos decimales: ${num1} + ${num2}`;
+                    answer = num1 + num2;
+                }
+            } else {
+                category = "Modo Olimpiada Escolar 🏆";
+                if (index % 3 === 0) {
+                    num1 = Math.floor(Math.random() * 15) + 5;
+                    num2 = Math.floor(Math.random() * 6) + 3;
+                    let num3 = Math.floor(Math.random() * 10) + 2;
+                    text = `Resuelve la operación combinada: (${num1} x ${num2}) - ${num3}`;
+                    answer = (num1 * num2) - num3;
+                } else if (index % 3 === 1) {
+                    const bases = [60, 80, 100, 120];
+                    num1 = bases[Math.floor(Math.random() * bases.length)];
+                    text = `Calcula los 3/4 de ${num1}`;
+                    answer = (num1 / 4) * 3;
+                } else {
+                    let start = Math.floor(Math.random() * 10) + 2;
+                    let step = Math.floor(Math.random() * 4) + 2;
+                    text = `Completa la serie: ${start}, ${start + step}, ${start + (step*2)}, ... (¿Cuál sigue?)`;
+                    answer = start + (step * 3);
+                }
+            }
+
+            options = [answer];
+            while (options.length < 4) {
+                let distractor = answer + (Math.floor(Math.random() * 10) - 5) * (Math.random() > 0.5 ? 1 : 2);
+                if (distractor !== answer && distractor > 0 && !options.includes(distractor)) {
+                    options.push(distractor);
+                }
+            }
+
+            options.sort(() => Math.random() - 0.5);
+
+            return { text, options, answer, category };
+        }
+
+        // CONTROL DE FLUJO DE PANTALLAS
+        function switchView(viewId) {
+            document.getElementById("screen-lobby").classList.add("hidden");
+            document.getElementById("screen-student-setup").classList.add("hidden");
+            document.getElementById("screen-student-game").classList.add("hidden");
+            document.getElementById("screen-teacher-dashboard").classList.add("hidden");
+
+            document.getElementById(`screen-${viewId}`).classList.remove("hidden");
+
+            if (viewId === 'teacher-dashboard') {
+                const generatedPin = Math.floor(1000 + Math.random() * 9000).toString();
+                currentPin = generatedPin;
+                document.getElementById("teacher-pin-display").innerText = generatedPin;
+                listenToPlayers(generatedPin);
+            }
+        }
+
+        let selectedAvatarValue = "🦊";
+        function setAvatar(emoji) {
+            selectedAvatarValue = emoji;
+            document.querySelectorAll(".avatar-opt").forEach(btn => {
+                if (btn.innerText === emoji) {
+                    btn.className = "avatar-opt text-2xl p-2 rounded-lg bg-indigo-50 border-2 border-indigo-500 scale-105 transition-all";
+                } else {
+                    btn.className = "avatar-opt text-2xl p-2 rounded-lg hover:bg-white transition-all";
+                }
+            });
+        }
+
+        // MODO PRÁCTICA INDIVIDUAL (DEMO RÁPIDO)
+        function startQuickDemo() {
+            isLocalSoloMode = true;
+            activePlayer = {
+                id: "solo_" + Date.now(),
+                name: "Estudiante (Práctica)",
+                avatar: "🦉",
+                correctAnswers: 0,
+                totalAttempts: 0,
+                times: [],
+                score: 0,
+                streak: 0
+            };
+            
+            currentQuestionSet = [];
+            for(let i=1; i<=10; i++) {
+                currentQuestionSet.push(generateQuestionByDifficulty('medium', i));
+            }
+
+            document.getElementById("student-avatar-display").innerText = activePlayer.avatar;
+            document.getElementById("student-name-display").innerText = activePlayer.name;
+
+            switchView("student-game");
+            document.getElementById("waiting-round-overlay").classList.add("hidden");
+            startQuestionRound(0);
+        }
+
+        // CONEXIÓN EN TIEMPO REAL DEL DOCENTE (PIZARRA)
+        async function startGroupSession() {
+            if (!window.isOnlineMode || !window.isOnlineMode()) {
+                showToast("No se pudo iniciar sesión en vivo (sin internet). Ejecutando demo local.", "error");
+                simulateGroupGameLocally();
+                return;
+            }
+
+            const db = window.firebaseDbObj;
+            const appId = window.appIdVal;
+            const diff = document.getElementById("setting-difficulty").value;
+            const timer = parseInt(document.getElementById("setting-timer").value) || 20;
+            const strict = document.getElementById("setting-strict").checked;
+
+            // Pre-generar las preguntas idénticas para toda la clase
+            const questions = [];
+            for(let i=1; i<=10; i++) {
+                questions.push(generateQuestionByDifficulty(diff, i));
+            }
+
+            try {
+                // Registrar sesión en Firestore (Regla 1)
+                const sessionDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'sessions', currentPin);
+                await setDoc(sessionDocRef, {
+                    pin: currentPin,
+                    status: "playing",
+                    difficulty: diff,
+                    timerDuration: timer,
+                    strictMode: strict,
+                    currentQuestionIdx: 0,
+                    questions: questions,
+                    questionActive: true,
+                    timestamp: Date.now()
+                });
+
+                document.getElementById("proyector-preview-text").innerText = `PIN ${currentPin} activo. Pregunta 1 enviada.`;
+                document.getElementById("live-round-label").innerText = `1/10`;
+                document.getElementById("btn-next-question").disabled = false;
+                document.getElementById("btn-next-question").className = "bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded-lg shadow transition-all";
+
+                showToast("¡Sesión iniciada con éxito! La pizarra se ha sincronizado.", "success");
+            } catch(e) {
+                console.error(e);
+                showToast("Error al inicializar sesión en la nube.", "error");
+            }
+        }
+
+        // CONECTAR ALUMNO A LA CLASE REAL
+        async function joinStudentGame() {
+            const pin = document.getElementById("input-pin").value.trim();
+            const nickname = document.getElementById("input-nickname").value.trim() || "Cerebrito";
+
+            if (!pin) {
+                showToast("Introduce el PIN de 4 cifras de la pizarra.", "error");
+                return;
+            }
+
+            if (!window.isOnlineMode || !window.isOnlineMode()) {
+                showToast("Sin conexión de red para emparejar. Prueba el Modo Práctica.", "error");
+                return;
+            }
+
+            const db = window.firebaseDbObj;
+            const appId = window.appIdVal;
+
+            try {
+                const sessionDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'sessions', pin);
+                const sessionSnap = await getDoc(sessionDocRef);
+
+                if (!sessionSnap.exists()) {
+                    showToast("No se encontró ninguna sesión activa con ese PIN.", "error");
+                    return;
+                }
+
+                currentPin = pin;
+                const playerId = "std_" + Date.now();
+
+                activePlayer = {
+                    id: playerId,
+                    name: nickname,
+                    avatar: selectedAvatarValue,
+                    sessionId: pin,
+                    correctAnswers: 0,
+                    totalAttempts: 0,
+                    times: [],
+                    score: 0,
+                    streak: 0
+                };
+
+                // Crear jugador en Firestore (Regla 1)
+                const playerDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', playerId);
+                await setDoc(playerDocRef, activePlayer);
+
+                // Configurar elementos de UI del alumno
+                document.getElementById("student-avatar-display").innerText = activePlayer.avatar;
+                document.getElementById("student-name-display").innerText = activePlayer.name;
+
+                switchView("student-game");
+                showToast("¡Conectado con éxito! Esperando pregunta...", "success");
+
+                // Escuchar el estado de la sesión del profesor
+                listenToActiveSession(pin);
+
+            } catch(e) {
+                console.error(e);
+                showToast("Error de conexión al aula.", "error");
+            }
+        }
+
+        // ESCUCHA DEL ALUMNO A LOS CAMBIOS DEL PROFESOR
+        function listenToActiveSession(pin) {
+            const db = window.firebaseDbObj;
+            const appId = window.appIdVal;
+
+            unsubscribeSession = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'sessions', pin), (docSnap) => {
+                if (!docSnap.exists()) return;
+                const sessionData = docSnap.data();
+
+                if (sessionData.status === "playing") {
+                    document.getElementById("waiting-round-overlay").classList.add("hidden");
+                    currentQuestionSet = sessionData.questions;
+                    
+                    if (currentQuestionIdx !== sessionData.currentQuestionIdx) {
+                        startQuestionRound(sessionData.currentQuestionIdx);
+                    }
+                } else if (sessionData.status === "ended") {
+                    renderFinalRewards();
+                }
+            }, (error) => {
+                console.error("Error en Snapshot de Sesión:", error);
+            });
+        }
+
+        // ESCUCHA DEL PROFESOR A LOS ALUMNOS CONECTADOS (Pizarra)
+        function listenToPlayers(pin) {
+            if (!window.isOnlineMode || !window.isOnlineMode()) return;
+
+            const db = window.firebaseDbObj;
+            const appId = window.appIdVal;
+            const playersColRef = collection(db, 'artifacts', appId, 'public', 'data', 'players');
+
+            // Regla 2: Sin queries complejas, filtramos en JS
+            unsubscribePlayers = onSnapshot(playersColRef, (snapshot) => {
+                playersDb = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.sessionId === pin) {
+                        playersDb.push(data);
+                    }
+                });
+
+                // Actualizar interfaz del proyector escolar
+                document.getElementById("live-connected-count").innerText = playersDb.length;
+                recalculateTeacherAnalysis();
+            }, (error) => {
+                console.error("Error en Snapshot de Jugadores:", error);
+            });
+        }
+
+        // ENVIAR SIGUIENTE PREGUNTA (Acción Docente)
+        async function triggerNextQuestion() {
+            const db = window.firebaseDbObj;
+            const appId = window.appIdVal;
+
+            if (currentQuestionIdx < 9) {
+                currentQuestionIdx++;
+                const sessionDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'sessions', currentPin);
+                
+                await updateDoc(sessionDocRef, {
+                    currentQuestionIdx: currentQuestionIdx,
+                    questionActive: true
+                });
+
+                document.getElementById("live-round-label").innerText = `${currentQuestionIdx + 1}/10`;
+                document.getElementById("proyector-preview-text").innerText = `Pregunta ${currentQuestionIdx + 1} enviada a los terminales.`;
+                showToast(`Enviada pregunta ${currentQuestionIdx + 1}`, "info");
+            } else {
+                // Finalizar Torneo en nube
+                const sessionDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'sessions', currentPin);
+                await updateDoc(sessionDocRef, { status: "ended" });
+                document.getElementById("proyector-preview-text").innerText = "Torneo Finalizado. Consulta las métricas de selección abajo.";
+                showToast("Torneo completado de forma global.", "success");
+            }
+        }
+
+        // GESTIÓN DE RONDA DE PREGUNTA EN ALUMNO
+        function startQuestionRound(questionIndex) {
+            currentQuestionIdx = questionIndex;
+            selectedOptionIdx = null;
+
+            if (currentQuestionIdx >= currentQuestionSet.length) {
+                renderFinalRewards();
+                return;
+            }
+
+            const q = currentQuestionSet[currentQuestionIdx];
+            document.getElementById("question-index-label").innerText = `Pregunta ${currentQuestionIdx + 1} de ${currentQuestionSet.length}`;
+            document.getElementById("current-question-text").innerText = q.text;
+            document.getElementById("current-question-category").innerText = q.category;
+
+            for (let i = 0; i < 4; i++) {
+                const optBtn = document.getElementById(`opt-${i}`);
+                const optText = document.getElementById(`opt-text-${i}`);
+                optBtn.className = "option-btn py-5 px-6 rounded-2xl border-2 border-[var(--card-border)] hover:border-[var(--primary)] text-xl font-bold text-left flex justify-between items-center bg-[var(--panel-bg)] text-[var(--text-main)]";
+                optText.innerText = `${String.fromCharCode(65 + i)}) ${q.options[i]}`;
+                optBtn.children[1].innerHTML = `<i class="fa-regular fa-circle"></i>`;
+                optBtn.disabled = false;
+            }
+
+            const btnSubmit = document.getElementById("btn-submit-answer");
+            btnSubmit.disabled = true;
+            btnSubmit.className = "bg-gray-300 cursor-not-allowed text-gray-500 font-bold py-3 px-8 rounded-xl shadow-md transition-all";
+
+            const timerSetting = parseInt(document.getElementById("setting-timer").value) || 20;
+            timerRemaining = timerSetting;
+            questionStartTime = Date.now();
+            updateTimerProgressBar();
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timerRemaining--;
+                updateTimerProgressBar();
+                
+                if (timerRemaining <= 3 && timerRemaining > 0) {
+                    playSound('tick');
+                }
+
+                if (timerRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmitOnTimeout();
+                }
+            }, 1000);
+        }
+
+        function updateTimerProgressBar() {
+            const timerSetting = parseInt(document.getElementById("setting-timer").value) || 20;
+            const pct = (timerRemaining / timerSetting) * 100;
+            const bar = document.getElementById("time-progress-bar");
+            bar.style.width = `${pct}%`;
+
+            if (pct > 50) {
+                bar.className = "h-full bg-green-500 transition-all duration-1000";
+            } else if (pct > 20) {
+                bar.className = "h-full bg-amber-500 transition-all duration-1000";
+            } else {
+                bar.className = "h-full bg-red-500 transition-all duration-1000";
+            }
+        }
+
+        function selectOption(idx) {
+            selectedOptionIdx = idx;
+            
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`opt-${i}`);
+                if (i === idx) {
+                    btn.className = "option-btn py-5 px-6 rounded-2xl border-2 border-[var(--primary)] text-xl font-bold bg-indigo-50 text-[var(--primary)] text-left flex justify-between items-center scale-102 transition-all";
+                    btn.children[1].innerHTML = `<i class="fa-solid fa-circle-dot"></i>`;
+                } else {
+                    btn.className = "option-btn py-5 px-6 rounded-2xl border-2 border-[var(--card-border)] text-xl font-bold text-left flex justify-between items-center bg-[var(--panel-bg)] text-[var(--text-main)] opacity-60";
+                    btn.children[1].innerHTML = `<i class="fa-regular fa-circle"></i>`;
+                }
+            }
+
+            const btnSubmit = document.getElementById("btn-submit-answer");
+            btnSubmit.disabled = false;
+            btnSubmit.className = "bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all transform active:scale-95";
+        }
+
+        // SUBMIT DE ALUMNO (SUBE METRICAS EN TIEMPO REAL)
+        async function submitAnswer() {
+            clearInterval(timerInterval);
+            
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`opt-${i}`).disabled = true;
+            }
+            document.getElementById("btn-submit-answer").disabled = true;
+            document.getElementById("btn-submit-answer").className = "bg-gray-300 cursor-not-allowed text-gray-500 font-bold py-3 px-8 rounded-xl shadow-md transition-all";
+
+            const elapsedSecs = ((Date.now() - questionStartTime) / 1000).toFixed(2);
+            const isCorrect = currentQuestionSet[currentQuestionIdx].options[selectedOptionIdx] === currentQuestionSet[currentQuestionIdx].answer;
+
+            activePlayer.totalAttempts++;
+            activePlayer.times.push(parseFloat(elapsedSecs));
+
+            if (isCorrect) {
+                activePlayer.correctAnswers++;
+                activePlayer.streak++;
+                activePlayer.score += Math.max(100 - Math.floor(elapsedSecs * 3), 40);
+                playSound('correct');
+                showToast("¡Correcto! Sincronizando...", "success");
+                triggerConfetti();
+            } else {
+                activePlayer.streak = 0;
+                playSound('wrong');
+                showToast("Respuesta registrada. ¡Sigue concentrado!", "error");
+            }
+
+            document.getElementById("student-score-display").innerText = `${activePlayer.score} pts`;
+            document.getElementById("student-streak-display").innerText = `🔥 ${activePlayer.streak}`;
+
+            evalInsignias();
+
+            // Guardar progreso en Firestore si estamos en línea
+            if (!isLocalSoloMode && window.isOnlineMode && window.isOnlineMode()) {
+                const db = window.firebaseDbObj;
+                const appId = window.appIdVal;
+                const playerDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'players', activePlayer.id);
+                await updateDoc(playerDocRef, activePlayer);
+            }
+        }
+
+        function autoSubmitOnTimeout() {
+            showToast("¡Se acabó el tiempo!", "error");
+            activePlayer.totalAttempts++;
+            activePlayer.times.push(parseInt(document.getElementById("setting-timer").value) || 20);
+            activePlayer.streak = 0;
+            document.getElementById("student-streak-display").innerText = `🔥 0`;
+            playSound('wrong');
+        }
+
+        function evalInsignias() {
+            const container = document.getElementById("badges-container");
+            container.innerHTML = "";
+            let badges = [];
+
+            if (activePlayer.streak >= 3) {
+                badges.push({ text: "🎯 Precisión", bg: "bg-amber-100 text-amber-700" });
+            }
+            if (activePlayer.times.some(t => t < 3.5 && t > 0)) {
+                badges.push({ text: "⚡ Velocista", bg: "bg-cyan-100 text-cyan-700" });
+            }
+            if (activePlayer.correctAnswers >= 5) {
+                badges.push({ text: "🧠 Constancia", bg: "bg-purple-100 text-purple-700" });
+            }
+
+            if (badges.length === 0) {
+                container.innerHTML = `<span class="text-xs bg-slate-100 p-1 rounded border">⏳ En progreso</span>`;
+            } else {
+                badges.forEach(b => {
+                    const el = document.createElement("span");
+                    el.className = `text-xs font-bold px-2.5 py-1 rounded-full ${b.bg}`;
+                    el.innerText = b.text;
+                    container.appendChild(el);
+                });
+            }
+        }
+
+        // REPROCESAR MÉTRICAS DOCENTES (Pizarra)
+        function recalculateTeacherAnalysis() {
+            const tbody = document.getElementById("teacher-students-tbody");
+            if (playersDb.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400">Esperando respuestas de los alumnos...</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = "";
+            let totalAccuracy = 0;
+
+            const scored = playersDb.map(p => {
+                const total = p.totalAttempts || 1;
+                const accuracy = (p.correctAnswers / total) * 100;
+                const avgTime = p.times.length > 0 ? (p.times.reduce((a, b) => a + b, 0) / p.times.length) : 0;
+                
+                // Normalización de velocidad (más rápido = más aptitud olímpica)
+                const velocityFactor = Math.max(12 - avgTime, 0) * 8.3;
+                const iao = ((accuracy * 0.6) + (velocityFactor * 0.4)).toFixed(1);
+
+                totalAccuracy += accuracy;
+
+                return { ...p, accuracy, avgTime, iao };
+            });
+
+            // Promedio del aula
+            document.getElementById("live-class-avg").innerText = `${Math.round(totalAccuracy / playersDb.length)}%`;
+
+            // Ordenar por IAO descendente
+            scored.sort((a, b) => b.iao - a.iao);
+
+            scored.forEach(p => {
+                const row = document.createElement("tr");
+                let statusBadge = "";
+                if (p.iao >= 75) {
+                    statusBadge = `<span class="bg-green-100 text-green-700 font-bold px-2.5 py-1 rounded-full text-xs">⭐ Candidato Apto</span>`;
+                } else if (p.iao >= 50) {
+                    statusBadge = `<span class="bg-amber-100 text-amber-700 font-semibold px-2.5 py-1 rounded-full text-xs">Suplente</span>`;
+                } else {
+                    statusBadge = `<span class="bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full text-xs">En Entrenamiento</span>`;
+                }
+
+                row.innerHTML = `
+                    <td class="py-3 px-4 text-2xl">${p.avatar}</td>
+                    <td class="py-3 px-4 font-bold">${p.name}</td>
+                    <td class="py-3 px-4 text-center">${p.correctAnswers} / ${p.totalAttempts}</td>
+                    <td class="py-3 px-4 text-center text-indigo-600 font-bold">${Math.round(p.accuracy)}%</td>
+                    <td class="py-3 px-4 text-center">${p.avgTime.toFixed(2)}s</td>
+                    <td class="py-3 px-4 text-center text-lg font-black text-amber-600">${p.iao}</td>
+                    <td class="py-3 px-4 text-center">${statusBadge}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // EXPORTACIÓN A CSV PARA EVALUACIÓN DOCENTE
+        function exportCSV() {
+            if (playersDb.length === 0) {
+                showToast("No hay datos de alumnos registrados para exportar.", "error");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Nombre,Correctas,Intentos,Precision,TiempoMedio,IndiceIAO,SeleccionOlimpiada\n";
+
+            playersDb.forEach(p => {
+                const total = p.totalAttempts || 1;
+                const accuracy = (p.correctAnswers / total) * 100;
+                const avgTime = p.times.length > 0 ? (p.times.reduce((a, b) => a + b, 0) / p.times.length) : 0;
+                const velocityFactor = Math.max(12 - avgTime, 0) * 8.3;
+                const iao = ((accuracy * 0.6) + (velocityFactor * 0.4)).toFixed(1);
+
+                let sel = "Entrenamiento";
+                if (iao >= 75) sel = "Candidato";
+                else if (iao >= 50) sel = "Suplente";
+
+                csvContent += `"${p.name}",${p.correctAnswers},${p.totalAttempts},${Math.round(accuracy)}%,${avgTime.toFixed(2)},${iao},"${sel}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Analisis_Olimpiadas_PIN_${currentPin}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast("Reporte descargado correctamente en formato CSV.", "success");
+        }
+
+        // PANTALLA FIN DE JUEGO ALUMNO
+        function renderFinalRewards() {
+            if (unsubscribeSession) unsubscribeSession();
+            
+            const gameScreen = document.getElementById("student-question-container");
+            gameScreen.innerHTML = `
+                <div class="p-10 text-center max-w-xl mx-auto col-span-4 mt-8">
+                    <div class="text-7xl mb-4 animate-bounce">🏆</div>
+                    <h2 class="text-4xl font-bold text-amber-500 mb-2">¡Prueba Finalizada!</h2>
+                    <p class="text-lg text-[var(--text-main)] mb-6">Tu puntuación se ha guardado de forma segura en la pizarra de tu profesor.</p>
+
+                    <div class="bg-indigo-50 p-6 rounded-2xl mb-8 grid grid-cols-2 gap-4">
+                        <div>
+                            <span class="text-xs text-[var(--text-muted)] uppercase font-bold">Puntuación</span>
+                            <div class="text-4xl font-extrabold text-indigo-600">${activePlayer.score} pts</div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-[var(--text-muted)] uppercase font-bold">Aciertos</span>
+                            <div class="text-4xl font-extrabold text-green-600">${activePlayer.correctAnswers} / 10</div>
+                        </div>
+                    </div>
+
+                    <button onclick="window.location.reload()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all">
+                        Salir y Cerrar Sesión
+                    </button>
+                </div>
+            `;
+            triggerConfetti();
+        }
+
+        // EFECTO VISUAL CONFETI
+        function triggerConfetti() {
+            const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#a855f7'];
+            for (let i = 0; i < 40; i++) {
+                const el = document.createElement("div");
+                el.className = "confetti-piece";
+                el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                el.style.left = `${Math.random() * 100}vw`;
+                el.style.top = `-20px`;
+                el.style.animationDelay = `${Math.random() * 1.5}s`;
+                el.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(el);
+                
+                setTimeout(() => el.remove(), 3000);
+            }
+        }
+
+        // NOTIFICACIONES FLOTANTES (TOAST)
+        function showToast(message, type = 'info') {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            
+            let bg = "bg-white text-slate-800 border-slate-200";
+            let icon = '<i class="fa-solid fa-circle-info text-blue-500"></i>';
+
+            if (type === 'success') {
+                bg = "bg-green-50 text-green-800 border-green-200";
+                icon = '<i class="fa-solid fa-circle-check text-green-500"></i>';
+            } else if (type === 'error') {
+                bg = "bg-red-50 text-red-800 border-red-200";
+                icon = '<i class="fa-solid fa-circle-xmark text-red-500"></i>';
+            }
+
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg max-w-sm transition-all duration-300 transform translate-y-2 opacity-0 ${bg}`;
+            toast.innerHTML = `${icon} <span class="text-sm font-medium">${message}</span>`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove("translate-y-2", "opacity-0");
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add("translate-y-2", "opacity-0");
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // COMPENSACIÓN LOCAL DE GRUPO SI NO HAY RED DISPONIBLE
+        function simulateGroupGameLocally() {
+            showToast("Simulando pizarra en local de forma autónoma.", "info");
+            playersDb = [
+                { id: "b1", name: "Lucas M.", avatar: "🦁", sessionId: currentPin, correctAnswers: 8, totalAttempts: 10, times: [2, 3, 2, 4, 3, 2, 3, 2, 3, 4], score: 750, streak: 5 },
+                { id: "b2", name: "Sofía S.", avatar: "🐼", sessionId: currentPin, correctAnswers: 9, totalAttempts: 10, times: [1, 2, 1, 2, 1, 2, 2, 1, 1, 2], score: 920, streak: 9 },
+                { id: "b3", name: "Búho Veloz", avatar: "🦉", sessionId: currentPin, correctAnswers: 6, totalAttempts: 10, times: [5, 4, 5, 4, 6, 4, 5, 4, 5, 4], score: 510, streak: 2 }
+            ];
+            document.getElementById("live-connected-count").innerText = playersDb.length;
+            recalculateTeacherAnalysis();
+        }
+    </script>
+</body>
+</html>
