@@ -5,492 +5,184 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Olimpiadas de Cálculo · 4.º Primaria</title>
 <style>
-  /* ── TOKENS ──────────────────────────────────────────────── */
-  :root {
-    --navy:   #0f1b2d;
-    --navy2:  #1a2d47;
-    --gold:   #f5c518;
-    --gold2:  #e6a800;
-    --coral:  #ff6b6b;
-    --mint:   #4ecdc4;
-    --white:  #ffffff;
-    --offwhite: #f0f4ff;
-    --muted:  #8899aa;
-    --card:   #162236;
-    --green:  #2ecc71;
-    --red:    #e74c3c;
-    --radius: 14px;
-    --shadow: 0 8px 32px rgba(0,0,0,0.35);
-  }
-
-  /* ── RESET & BASE ────────────────────────────────────────── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 16px; }
-  body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: var(--navy);
-    color: var(--white);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ── STARS BACKGROUND ────────────────────────────────────── */
-  .stars {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background:
-      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
-      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
-      radial-gradient(1px 1px at 75% 40%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 88% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
-      radial-gradient(1px 1px at 20% 85%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 45% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(2px 2px at 65% 75%, rgba(245,197,24,0.4) 0%, transparent 100%),
-      radial-gradient(2px 2px at 5% 50%,  rgba(78,205,196,0.3) 0%, transparent 100%);
-  }
-
-  /* ── LAYOUT ──────────────────────────────────────────────── */
-  .screen {
-    display: none;
-    position: relative; z-index: 1;
-    min-height: 100vh;
-    padding: 24px 16px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-  .screen.active { display: flex; }
-
-  /* ── LOGO / HEADER ───────────────────────────────────────── */
-  .logo {
-    text-align: center;
-  }
-  .logo .trophy { font-size: 3.5rem; display: block; margin-bottom: 4px; }
-  .logo h1 {
-    font-size: clamp(1.6rem, 5vw, 2.4rem);
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    color: var(--gold);
-    text-shadow: 0 0 30px rgba(245,197,24,0.4);
-  }
-  .logo p { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
-
-  /* ── CARDS ───────────────────────────────────────────────── */
-  .card {
-    background: var(--card);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius);
-    padding: 28px 24px;
-    box-shadow: var(--shadow);
-    width: 100%;
-    max-width: 440px;
-  }
-  .card h2 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* ── INPUTS ──────────────────────────────────────────────── */
-  label { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 5px; }
-  input, select {
-    width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 8px;
-    color: var(--white);
-    font-size: 1rem;
-    padding: 12px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    margin-bottom: 14px;
-  }
-  input:focus, select:focus { border-color: var(--gold); }
-  input::placeholder { color: var(--muted); }
-  select option { background: var(--navy2); }
-
-  /* PIN input big */
-  .pin-input {
-    font-size: 2rem;
-    font-weight: 800;
-    text-align: center;
-    letter-spacing: 8px;
-    color: var(--gold);
-  }
-
-  /* ── BUTTONS ─────────────────────────────────────────────── */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 14px 20px;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    transition: transform 0.1s, opacity 0.2s, box-shadow 0.2s;
-  }
-  .btn:active { transform: scale(0.97); }
-  .btn-gold {
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    color: var(--navy);
-    box-shadow: 0 4px 20px rgba(245,197,24,0.35);
-  }
-  .btn-gold:hover { box-shadow: 0 6px 28px rgba(245,197,24,0.5); }
-  .btn-outline {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.2);
-    color: var(--white);
-  }
-  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
-  .btn-coral {
-    background: linear-gradient(135deg, var(--coral), #ff4444);
-    color: var(--white);
-  }
-  .btn-mint {
-    background: linear-gradient(135deg, var(--mint), #36b0a8);
-    color: var(--navy);
-    font-weight: 800;
-  }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .btn-sm { padding: 9px 16px; font-size: 0.85rem; width: auto; }
-
-  /* ── HOME SCREEN ─────────────────────────────────────────── */
-  .home-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    width: 100%;
-    max-width: 440px;
-  }
-  .home-option {
-    background: var(--card);
-    border: 2px solid transparent;
-    border-radius: var(--radius);
-    padding: 28px 16px;
-    text-align: center;
-    cursor: pointer;
-    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: var(--shadow);
-  }
-  .home-option:hover {
-    border-color: var(--gold);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(245,197,24,0.2);
-  }
-  .home-option .icon { font-size: 2.6rem; display: block; margin-bottom: 10px; }
-  .home-option h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
-  .home-option p { font-size: 0.78rem; color: var(--muted); }
-
-  /* ── AVATAR GRID ─────────────────────────────────────────── */
-  .avatar-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-  .avatar-btn {
-    font-size: 1.6rem;
-    background: rgba(255,255,255,0.06);
-    border: 2px solid transparent;
-    border-radius: 10px;
-    padding: 8px 4px;
-    cursor: pointer;
-    transition: border-color 0.2s, transform 0.15s;
-    text-align: center;
-  }
-  .avatar-btn:hover { border-color: var(--muted); transform: scale(1.1); }
-  .avatar-btn.selected { border-color: var(--gold); background: rgba(245,197,24,0.12); }
-
-  /* ── PIN DISPLAY (docente) ───────────────────────────────── */
-  .pin-display {
-    font-size: 3.5rem;
-    font-weight: 900;
-    letter-spacing: 10px;
-    color: var(--gold);
-    text-align: center;
-    text-shadow: 0 0 40px rgba(245,197,24,0.5);
-    margin: 8px 0;
-  }
-  .pin-label { font-size: 0.75rem; color: var(--muted); text-align: center; }
-
-  /* ── WAITING SCREEN ──────────────────────────────────────── */
-  .pulse {
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    background: rgba(245,197,24,0.15);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem;
-    animation: pulse 2s ease-in-out infinite;
-    margin: 0 auto 16px;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245,197,24,0.3); }
-    50% { transform: scale(1.08); box-shadow: 0 0 0 20px rgba(245,197,24,0); }
-  }
-
-  /* ── QUESTION SCREEN ─────────────────────────────────────── */
-  .question-header {
-    width: 100%; max-width: 600px;
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 8px;
-  }
-  .question-counter { color: var(--muted); font-size: 0.85rem; }
-  .timer-bar-wrap {
-    width: 100%; max-width: 600px;
-    height: 8px; background: rgba(255,255,255,0.1);
-    border-radius: 99px; overflow: hidden; margin-bottom: 20px;
-  }
-  .timer-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--mint), var(--gold));
-    border-radius: 99px;
-    transition: width 1s linear, background 0.5s;
-  }
-  .timer-bar.urgent { background: linear-gradient(90deg, var(--coral), #ff2200); }
-  .timer-num {
-    font-size: 1.1rem;
-    font-weight: 800;
-    color: var(--gold);
-    min-width: 28px;
-    text-align: right;
-  }
-  .question-text {
-    font-size: clamp(1.5rem, 5vw, 2.2rem);
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 28px;
-    line-height: 1.2;
-    color: var(--white);
-    max-width: 600px;
-    width: 100%;
-  }
-  .options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    width: 100%;
-    max-width: 600px;
-  }
-  .option-btn {
-    background: var(--card);
-    border: 2px solid rgba(255,255,255,0.1);
-    border-radius: var(--radius);
-    color: var(--white);
-    font-size: clamp(1rem, 3vw, 1.4rem);
-    font-weight: 700;
-    padding: 22px 12px;
-    cursor: pointer;
-    transition: border-color 0.15s, transform 0.1s, background 0.15s;
-    text-align: center;
-  }
-  .option-btn:hover:not(:disabled) {
-    border-color: var(--gold);
-    transform: translateY(-2px);
-    background: rgba(245,197,24,0.08);
-  }
-  .option-btn:disabled { cursor: not-allowed; }
-  .option-btn.correct { background: rgba(46,204,113,0.25); border-color: var(--green); }
-  .option-btn.wrong   { background: rgba(231,76,60,0.25);  border-color: var(--red); }
-  .option-btn.selected { border-color: var(--mint); background: rgba(78,205,196,0.12); }
-
-  /* ── FEEDBACK ────────────────────────────────────────────── */
-  .feedback-overlay {
-    position: fixed; inset: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px);
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.25s;
-  }
-  .feedback-overlay.show { opacity: 1; pointer-events: auto; }
-  .feedback-box {
-    text-align: center;
-    padding: 40px 32px;
-    border-radius: 20px;
-    background: var(--card);
-    border: 2px solid var(--gold);
-    box-shadow: var(--shadow);
-    transform: scale(0.85);
-    transition: transform 0.25s;
-    max-width: 320px;
-  }
-  .feedback-overlay.show .feedback-box { transform: scale(1); }
-  .feedback-icon { font-size: 3.5rem; display: block; margin-bottom: 12px; }
-  .feedback-msg { font-size: 1.3rem; font-weight: 800; }
-  .feedback-pts { font-size: 1rem; color: var(--gold); margin-top: 6px; }
-
-  /* ── SCOREBOARD ──────────────────────────────────────────── */
-  .score-row {
-    display: flex; align-items: center; gap: 14px;
-    padding: 12px 16px;
-    border-radius: 10px;
-    margin-bottom: 8px;
-    background: rgba(255,255,255,0.05);
-    transition: background 0.2s;
-  }
-  .score-row.me { background: rgba(245,197,24,0.12); border: 1px solid rgba(245,197,24,0.3); }
-  .score-pos { font-size: 1.1rem; font-weight: 800; color: var(--muted); min-width: 24px; }
-  .score-pos.gold   { color: #ffd700; }
-  .score-pos.silver { color: #c0c0c0; }
-  .score-pos.bronze { color: #cd7f32; }
-  .score-avatar { font-size: 1.4rem; }
-  .score-name { flex: 1; font-weight: 600; font-size: 0.95rem; }
-  .score-pts { font-weight: 800; color: var(--gold); }
-  .score-acc { font-size: 0.75rem; color: var(--muted); }
-
-  /* ── DOCENTE DASHBOARD ───────────────────────────────────── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  .stat-box {
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-    padding: 14px 10px;
-    text-align: center;
-  }
-  .stat-num { font-size: 1.8rem; font-weight: 900; color: var(--gold); }
-  .stat-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-
-  .student-list { max-height: 220px; overflow-y: auto; }
-  .student-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-bottom: 6px;
-    background: rgba(255,255,255,0.04);
-  }
-  .student-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-  .student-dot.answered { background: var(--gold); }
-
-  /* ── TEACHER PIZARRA PROJECTION ──────────────────────────── */
-  .pizarra {
-    width: 100%; max-width: 760px;
-    background: var(--card);
-    border-radius: 18px;
-    border: 2px solid rgba(245,197,24,0.3);
-    padding: 28px 24px;
-    box-shadow: var(--shadow);
-  }
-  .pizarra-q {
-    font-size: clamp(1.4rem, 4vw, 2rem);
-    font-weight: 800;
-    text-align: center;
-    color: var(--white);
-    margin: 12px 0 20px;
-  }
-  .pizarra-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .pizarra-opt {
-    border-radius: 10px;
-    padding: 16px;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: 700;
-    background: rgba(255,255,255,0.07);
-    border: 2px solid rgba(255,255,255,0.1);
-  }
-  .pizarra-opt.correct { background: rgba(46,204,113,0.2); border-color: var(--green); }
-
-  .responses-bar { margin-top: 10px; }
-  .responses-bar-inner {
-    height: 12px;
-    background: linear-gradient(90deg, var(--mint), var(--gold));
-    border-radius: 99px;
-    transition: width 0.5s ease;
-  }
-  .responses-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 5px; }
-
-  /* ── RESULTS FINAL ───────────────────────────────────────── */
-  .podium {
-    display: flex; align-items: flex-end; justify-content: center;
-    gap: 10px; margin: 20px 0;
-  }
-  .podium-slot { text-align: center; }
-  .podium-block {
-    border-radius: 8px 8px 0 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem;
-    margin: 0 auto 6px;
-    width: 70px;
-  }
-  .podium-block.p1 { height: 90px; background: linear-gradient(180deg,#ffd700,#e6a800); width: 80px; }
-  .podium-block.p2 { height: 65px; background: linear-gradient(180deg,#c0c0c0,#999); }
-  .podium-block.p3 { height: 45px; background: linear-gradient(180deg,#cd7f32,#a0622a); }
-  .podium-name { font-size: 0.8rem; font-weight: 700; }
-  .podium-pts  { font-size: 0.72rem; color: var(--gold); }
-
-  /* ── TOAST ───────────────────────────────────────────────── */
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-    background: var(--navy2); border: 1px solid rgba(255,255,255,0.15);
-    padding: 12px 22px; border-radius: 99px;
-    font-size: 0.9rem; font-weight: 600;
-    box-shadow: var(--shadow); z-index: 200;
-    transition: transform 0.3s, opacity 0.3s;
-    opacity: 0;
-    white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-  /* ── PRACTICE MODE ───────────────────────────────────────── */
-  .streak-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(245,197,24,0.12);
-    border: 1px solid rgba(245,197,24,0.3);
-    border-radius: 99px;
-    padding: 4px 14px;
-    font-size: 0.85rem; font-weight: 700; color: var(--gold);
-  }
-
-  /* ── MISC ────────────────────────────────────────────────── */
-  .divider {
-    height: 1px; background: rgba(255,255,255,0.08);
-    margin: 16px 0; width: 100%;
-  }
-  .text-muted { color: var(--muted); font-size: 0.85rem; }
-  .text-center { text-align: center; }
-  .mb-0 { margin-bottom: 0; }
-  .gap-10 { display: flex; flex-direction: column; gap: 10px; }
-  .row { display: flex; gap: 10px; }
-  .row > * { flex: 1; }
-
-  /* ── SCROLLBAR ───────────────────────────────────────────── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 99px; }
-
-  /* ── RESPONSIVE ──────────────────────────────────────────── */
-  @media (max-width: 480px) {
-    .options-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .option-btn { padding: 18px 8px; font-size: 1.1rem; }
-    .home-grid { grid-template-columns: 1fr 1fr; }
-    .stats-grid { grid-template-columns: repeat(3,1fr); }
-    .card { padding: 20px 16px; }
-  }
+:root {
+  --navy:#0f1b2d; --navy2:#1a2d47; --gold:#f5c518; --gold2:#e6a800;
+  --coral:#ff6b6b; --mint:#4ecdc4; --white:#ffffff; --muted:#8899aa;
+  --card:#162236; --green:#2ecc71; --red:#e74c3c;
+  --radius:14px; --shadow:0 8px 32px rgba(0,0,0,0.35);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--navy);color:var(--white);min-height:100vh;overflow-x:hidden}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+  radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,.6) 0%,transparent 100%),
+  radial-gradient(1px 1px at 30% 60%,rgba(255,255,255,.4) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 75% 40%,rgba(255,255,255,.3) 0%,transparent 100%),
+  radial-gradient(1px 1px at 88% 70%,rgba(255,255,255,.6) 0%,transparent 100%),
+  radial-gradient(2px 2px at 65% 75%,rgba(245,197,24,.4) 0%,transparent 100%),
+  radial-gradient(2px 2px at 5%  50%,rgba(78,205,196,.3) 0%,transparent 100%)}
+.screen{display:none;position:relative;z-index:1;min-height:100vh;padding:24px 16px;
+  flex-direction:column;align-items:center;justify-content:center;gap:20px}
+.screen.active{display:flex}
+.logo{text-align:center}
+.logo .trophy{font-size:3.5rem;display:block;margin-bottom:4px}
+.logo h1{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:800;letter-spacing:-.5px;
+  color:var(--gold);text-shadow:0 0 30px rgba(245,197,24,.4)}
+.logo p{color:var(--muted);font-size:.9rem;margin-top:4px}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);
+  padding:28px 24px;box-shadow:var(--shadow);width:100%;max-width:440px}
+.card h2{font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+label{font-size:.8rem;color:var(--muted);display:block;margin-bottom:5px}
+input,select{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;color:var(--white);font-size:1rem;padding:12px 14px;outline:none;
+  transition:border-color .2s;margin-bottom:14px}
+input:focus,select:focus{border-color:var(--gold)}
+input::placeholder{color:var(--muted)}
+select option{background:var(--navy2)}
+.pin-input{font-size:2rem;font-weight:800;text-align:center;letter-spacing:8px;color:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  padding:14px 20px;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;
+  border:none;transition:transform .1s,opacity .2s,box-shadow .2s}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);
+  box-shadow:0 4px 20px rgba(245,197,24,.35)}
+.btn-gold:hover{box-shadow:0 6px 28px rgba(245,197,24,.5)}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--white)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-coral{background:linear-gradient(135deg,var(--coral),#ff4444);color:var(--white)}
+.btn-mint{background:linear-gradient(135deg,var(--mint),#36b0a8);color:var(--navy);font-weight:800}
+.btn-purple{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:var(--white)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-sm{padding:9px 16px;font-size:.85rem;width:auto}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:440px}
+.home-option{background:var(--card);border:2px solid transparent;border-radius:var(--radius);
+  padding:28px 16px;text-align:center;cursor:pointer;
+  transition:border-color .2s,transform .15s,box-shadow .2s;box-shadow:var(--shadow)}
+.home-option:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 12px 40px rgba(245,197,24,.2)}
+.home-option .icon{font-size:2.6rem;display:block;margin-bottom:10px}
+.home-option h3{font-size:1rem;font-weight:700;margin-bottom:4px}
+.home-option p{font-size:.78rem;color:var(--muted)}
+.avatar-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+.avatar-btn{font-size:1.6rem;background:rgba(255,255,255,.06);border:2px solid transparent;
+  border-radius:10px;padding:8px 4px;cursor:pointer;transition:border-color .2s,transform .15s;text-align:center}
+.avatar-btn:hover{border-color:var(--muted);transform:scale(1.1)}
+.avatar-btn.selected{border-color:var(--gold);background:rgba(245,197,24,.12)}
+.pin-display{font-size:3.5rem;font-weight:900;letter-spacing:10px;color:var(--gold);
+  text-align:center;text-shadow:0 0 40px rgba(245,197,24,.5);margin:8px 0}
+.pin-label{font-size:.75rem;color:var(--muted);text-align:center}
+.pulse{width:80px;height:80px;border-radius:50%;background:rgba(245,197,24,.15);
+  display:flex;align-items:center;justify-content:center;font-size:2rem;
+  animation:pulse 2s ease-in-out infinite;margin:0 auto 16px}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(245,197,24,.3)}
+  50%{transform:scale(1.08);box-shadow:0 0 0 20px rgba(245,197,24,0)}}
+.question-header{width:100%;max-width:600px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.question-counter{color:var(--muted);font-size:.85rem}
+.timer-bar-wrap{width:100%;max-width:600px;height:8px;background:rgba(255,255,255,.1);
+  border-radius:99px;overflow:hidden;margin-bottom:20px}
+.timer-bar{height:100%;background:linear-gradient(90deg,var(--mint),var(--gold));
+  border-radius:99px;transition:width 1s linear,background .5s}
+.timer-bar.urgent{background:linear-gradient(90deg,var(--coral),#ff2200)}
+.timer-num{font-size:1.1rem;font-weight:800;color:var(--gold);min-width:28px;text-align:right}
+.question-text{font-size:clamp(1.5rem,5vw,2.2rem);font-weight:800;text-align:center;
+  margin-bottom:28px;line-height:1.2;color:var(--white);max-width:600px;width:100%}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:600px}
+.option-btn{background:var(--card);border:2px solid rgba(255,255,255,.1);border-radius:var(--radius);
+  color:var(--white);font-size:clamp(1rem,3vw,1.4rem);font-weight:700;padding:22px 12px;
+  cursor:pointer;transition:border-color .15s,transform .1s,background .15s;text-align:center}
+.option-btn:hover:not(:disabled){border-color:var(--gold);transform:translateY(-2px);background:rgba(245,197,24,.08)}
+.option-btn:disabled{cursor:not-allowed}
+.option-btn.correct{background:rgba(46,204,113,.25);border-color:var(--green)}
+.option-btn.wrong{background:rgba(231,76,60,.25);border-color:var(--red)}
+.option-btn.selected{border-color:var(--mint);background:rgba(78,205,196,.12)}
+.feedback-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.6);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s}
+.feedback-overlay.show{opacity:1;pointer-events:auto}
+.feedback-box{text-align:center;padding:40px 32px;border-radius:20px;background:var(--card);
+  border:2px solid var(--gold);box-shadow:var(--shadow);transform:scale(.85);transition:transform .25s;max-width:320px}
+.feedback-overlay.show .feedback-box{transform:scale(1)}
+.feedback-icon{font-size:3.5rem;display:block;margin-bottom:12px}
+.feedback-msg{font-size:1.3rem;font-weight:800}
+.feedback-pts{font-size:1rem;color:var(--gold);margin-top:6px}
+.score-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;
+  margin-bottom:8px;background:rgba(255,255,255,.05);transition:background .2s}
+.score-row.me{background:rgba(245,197,24,.12);border:1px solid rgba(245,197,24,.3)}
+.score-pos{font-size:1.1rem;font-weight:800;color:var(--muted);min-width:24px}
+.score-pos.gold{color:#ffd700}.score-pos.silver{color:#c0c0c0}.score-pos.bronze{color:#cd7f32}
+.score-avatar{font-size:1.4rem}.score-name{flex:1;font-weight:600;font-size:.95rem}
+.score-pts{font-weight:800;color:var(--gold)}.score-acc{font-size:.75rem;color:var(--muted)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.stat-box{background:rgba(255,255,255,.05);border-radius:10px;padding:14px 10px;text-align:center}
+.stat-num{font-size:1.8rem;font-weight:900;color:var(--gold)}
+.stat-lbl{font-size:.72rem;color:var(--muted);margin-top:2px}
+.student-list{max-height:220px;overflow-y:auto}
+.student-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;
+  margin-bottom:6px;background:rgba(255,255,255,.04)}
+.student-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.student-dot.answered{background:var(--gold)}
+.pizarra{width:100%;max-width:760px;background:var(--card);border-radius:18px;
+  border:2px solid rgba(245,197,24,.3);padding:28px 24px;box-shadow:var(--shadow)}
+.pizarra-q{font-size:clamp(1.4rem,4vw,2rem);font-weight:800;text-align:center;color:var(--white);margin:12px 0 20px}
+.pizarra-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.pizarra-opt{border-radius:10px;padding:16px;text-align:center;font-size:1.2rem;font-weight:700;
+  background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.1)}
+.pizarra-opt.correct{background:rgba(46,204,113,.2);border-color:var(--green)}
+.responses-bar-inner{height:12px;background:linear-gradient(90deg,var(--mint),var(--gold));
+  border-radius:99px;transition:width .5s ease}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:20px 0}
+.podium-slot{text-align:center}
+.podium-block{border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;margin:0 auto 6px;width:70px}
+.podium-block.p1{height:90px;background:linear-gradient(180deg,#ffd700,#e6a800);width:80px}
+.podium-block.p2{height:65px;background:linear-gradient(180deg,#c0c0c0,#999)}
+.podium-block.p3{height:45px;background:linear-gradient(180deg,#cd7f32,#a0622a)}
+.podium-name{font-size:.8rem;font-weight:700}.podium-pts{font-size:.72rem;color:var(--gold)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--navy2);border:1px solid rgba(255,255,255,.15);padding:12px 22px;
+  border-radius:99px;font-size:.9rem;font-weight:600;box-shadow:var(--shadow);z-index:200;
+  transition:transform .3s,opacity .3s;opacity:0;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.streak-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,197,24,.12);
+  border:1px solid rgba(245,197,24,.3);border-radius:99px;padding:4px 14px;
+  font-size:.85rem;font-weight:700;color:var(--gold)}
+.divider{height:1px;background:rgba(255,255,255,.08);margin:16px 0;width:100%}
+.text-muted{color:var(--muted);font-size:.85rem}
+.text-center{text-align:center}
+.gap-10{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:10px}.row>*{flex:1}
+/* Panel docente */
+.session-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:16px;margin-bottom:10px;cursor:pointer;
+  transition:border-color .2s,background .2s}
+.session-card:hover{border-color:var(--gold);background:rgba(245,197,24,.06)}
+.session-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.session-badge{font-size:.72rem;padding:3px 10px;border-radius:99px;font-weight:700;
+  background:rgba(78,205,196,.2);color:var(--mint)}
+.evo-bar-wrap{height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin-top:4px}
+.evo-bar{height:100%;background:linear-gradient(90deg,var(--mint),var(--gold));border-radius:99px}
+.tab-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.tab-btn{padding:8px 16px;border-radius:99px;font-size:.82rem;font-weight:700;cursor:pointer;
+  border:1px solid rgba(255,255,255,.15);color:var(--muted);background:transparent;white-space:nowrap;
+  transition:all .2s}
+.tab-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.panel-section{display:none}.panel-section.active{display:block}
+.evo-student-row{display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-radius:10px;margin-bottom:8px;background:rgba(255,255,255,.04)}
+.evo-bars{flex:1}
+.evo-label{font-size:.72rem;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:3px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:99px}
+@media(max-width:480px){
+  .options-grid{gap:8px}.option-btn{padding:18px 8px;font-size:1.1rem}
+  .home-grid{grid-template-columns:1fr 1fr}.stats-grid{grid-template-columns:repeat(3,1fr)}
+  .card{padding:20px 16px}}
 </style>
 </head>
 <body>
 <div class="stars"></div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN 0 · HOME
-═══════════════════════════════════════════════════════════ -->
+<!-- HOME -->
 <div id="screen-home" class="screen active">
   <div class="logo">
     <span class="trophy">🏆</span>
@@ -499,40 +191,30 @@
   </div>
   <div class="home-grid">
     <div class="home-option" onclick="goto('screen-alumno-join')">
-      <span class="icon">🎒</span>
-      <h3>Soy alumno</h3>
-      <p>Entra con el PIN de tu clase</p>
+      <span class="icon">🎒</span><h3>Soy alumno</h3><p>Entra con el PIN de clase</p>
     </div>
     <div class="home-option" onclick="goto('screen-docente-setup')">
-      <span class="icon">📋</span>
-      <h3>Soy docente</h3>
-      <p>Crea sesión y proyecta</p>
+      <span class="icon">📋</span><h3>Iniciar sesión</h3><p>Crea partida y proyecta</p>
     </div>
     <div class="home-option" onclick="startPractice()">
-      <span class="icon">⚡</span>
-      <h3>Práctica</h3>
-      <p>Entrena en solitario</p>
+      <span class="icon">⚡</span><h3>Práctica</h3><p>Entrena en solitario</p>
     </div>
+    <div class="home-option" onclick="goto('screen-panel-login')">
+      <span class="icon">📊</span><h3>Panel docente</h3><p>Historial y evolución</p>
+    </div>
+  </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · CONFIG FIREBASE
-═══════════════════════════════════════════════════════════ -->
-
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · ALUMNO JOIN
-═══════════════════════════════════════════════════════════ -->
+<!-- ALUMNO JOIN -->
 <div id="screen-alumno-join" class="screen">
-  <div class="logo">
-    <span class="trophy">🎮</span>
-    <h1>Zona del Alumno</h1>
-  </div>
+  <div class="logo"><span class="trophy">🎮</span><h1>Zona del Alumno</h1></div>
   <div class="card">
     <h2>🔑 Únete a la clase</h2>
     <label>PIN del juego (pregunta al docente)</label>
-    <input id="join-pin" class="pin-input" type="text" maxlength="6" placeholder="· · · · · ·" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')" />
+    <input id="join-pin" class="pin-input" type="text" maxlength="6" placeholder="· · · · · ·"
+      oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"/>
     <label>Tu nombre o apodo</label>
-    <input id="join-name" type="text" maxlength="18" placeholder="Nombre..." />
+    <input id="join-name" type="text" maxlength="18" placeholder="Nombre..."/>
     <label>Elige tu avatar</label>
     <div class="avatar-grid" id="avatar-grid"></div>
     <div class="gap-10">
@@ -542,9 +224,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · ALUMNO WAITING
-═══════════════════════════════════════════════════════════ -->
+<!-- ALUMNO WAITING -->
 <div id="screen-alumno-wait" class="screen">
   <div class="pulse">⏳</div>
   <h2 style="font-size:1.5rem;font-weight:800">Esperando al profe…</h2>
@@ -557,94 +237,71 @@
   <button class="btn btn-outline btn-sm" onclick="leaveGame()" style="max-width:200px">Salir</button>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · ALUMNO QUESTION
-═══════════════════════════════════════════════════════════ -->
+<!-- ALUMNO QUESTION -->
 <div id="screen-alumno-question" class="screen">
   <div class="question-header">
     <span class="question-counter" id="aq-counter">Pregunta 1 / 10</span>
     <span class="streak-badge" id="aq-streak">🔥 0</span>
     <span class="timer-num" id="aq-timer">30</span>
   </div>
-  <div class="timer-bar-wrap">
-    <div class="timer-bar" id="aq-bar" style="width:100%"></div>
-  </div>
+  <div class="timer-bar-wrap"><div class="timer-bar" id="aq-bar" style="width:100%"></div></div>
   <div class="question-text" id="aq-question">Cargando…</div>
   <div class="options-grid" id="aq-options"></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · ALUMNO RESULTS
-═══════════════════════════════════════════════════════════ -->
+<!-- ALUMNO RESULTS -->
 <div id="screen-alumno-results" class="screen">
-  <div class="logo">
-    <span class="trophy">🏅</span>
-    <h1>¡Fin del juego!</h1>
-  </div>
-  <div class="card" id="alumno-final-stats" style="text-align:center">
+  <div class="logo"><span class="trophy">🏅</span><h1>¡Fin del juego!</h1></div>
+  <div class="card" style="text-align:center">
     <div style="font-size:3rem;margin-bottom:8px" id="ar-avatar">🦊</div>
     <div style="font-size:1.6rem;font-weight:900;color:var(--gold)" id="ar-pts">0 pts</div>
     <div style="color:var(--muted);margin-top:4px" id="ar-acc">Precisión: 0%</div>
   </div>
-  <div class="card" id="ar-scoreboard">
+  <div class="card" style="max-width:500px">
     <h2>🏆 Clasificación</h2>
     <div id="ar-list"></div>
   </div>
   <button class="btn btn-gold" onclick="goto('screen-home')" style="max-width:340px">🏠 Inicio</button>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · PRÁCTICA
-═══════════════════════════════════════════════════════════ -->
+<!-- PRÁCTICA -->
 <div id="screen-practice" class="screen">
   <div class="question-header">
     <span class="question-counter" id="pq-counter">Pregunta 1</span>
     <span class="streak-badge" id="pq-streak">🔥 0 racha</span>
     <span class="timer-num" id="pq-timer">30</span>
   </div>
-  <div class="timer-bar-wrap">
-    <div class="timer-bar" id="pq-bar" style="width:100%"></div>
-  </div>
+  <div class="timer-bar-wrap"><div class="timer-bar" id="pq-bar" style="width:100%"></div></div>
   <div class="question-text" id="pq-question">Cargando…</div>
   <div class="options-grid" id="pq-options"></div>
   <button class="btn btn-outline btn-sm" onclick="endPractice()" style="max-width:200px;margin-top:8px">Terminar</button>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · PRÁCTICA RESULTS
-═══════════════════════════════════════════════════════════ -->
+<!-- PRÁCTICA RESULTS -->
 <div id="screen-practice-results" class="screen">
-  <div class="logo">
-    <span class="trophy">⚡</span>
-    <h1>Resultado de Práctica</h1>
-  </div>
+  <div class="logo"><span class="trophy">⚡</span><h1>Resultado de Práctica</h1></div>
   <div class="card" style="text-align:center;max-width:380px">
     <div style="font-size:2.5rem;font-weight:900;color:var(--gold)" id="pr-pts">0 pts</div>
     <div style="color:var(--muted);margin:6px 0" id="pr-stats">0 correctas · 0 falladas</div>
     <div style="font-size:1.5rem;margin:10px 0" id="pr-medal">🥉</div>
   </div>
   <div class="gap-10" style="width:100%;max-width:340px">
-    <button class="btn btn-gold"    onclick="startPractice()">🔄 Otra ronda</button>
+    <button class="btn btn-gold" onclick="startPractice()">🔄 Otra ronda</button>
     <button class="btn btn-outline" onclick="goto('screen-home')">🏠 Inicio</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · DOCENTE SETUP
-═══════════════════════════════════════════════════════════ -->
+<!-- DOCENTE SETUP -->
 <div id="screen-docente-setup" class="screen">
-  <div class="logo">
-    <span class="trophy">📋</span>
-    <h1>Panel del Docente</h1>
-  </div>
+  <div class="logo"><span class="trophy">📋</span><h1>Nueva Sesión</h1></div>
   <div class="card">
-    <h2>⚙️ Configurar sesión</h2>
+    <h2>⚙️ Configurar partida</h2>
     <label>Nivel matemático</label>
     <select id="d-level">
-      <option value="easy">Fácil — Sumas y restas básicas</option>
-      <option value="medium" selected>Medio — 4.º Primaria estándar</option>
-      <option value="hard">Alto — Fracciones y decimales</option>
-      <option value="olimpiada">Modo Olimpiada 🏆</option>
+      <option value="easy">Fácil — Sumas, dobles, ×10</option>
+      <option value="medium" selected>Medio — Tablas y divisiones</option>
+      <option value="hard">Alto — Números grandes y redondeo</option>
+      <option value="olimpiada">Olimpiada 🏆 — Operaciones en cadena</option>
     </select>
     <label>Número de preguntas</label>
     <select id="d-numq">
@@ -660,6 +317,8 @@
       <option value="30" selected>30 s (estándar)</option>
       <option value="45">45 s (relajado)</option>
     </select>
+    <label>Nombre de la sesión (opcional)</label>
+    <input id="d-session-name" placeholder="Ej: Martes 17 junio · Tablas"/>
     <div class="divider"></div>
     <div class="gap-10">
       <button class="btn btn-gold" onclick="createSession()">🚀 Crear sesión y ver PIN</button>
@@ -668,42 +327,27 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · DOCENTE LOBBY
-═══════════════════════════════════════════════════════════ -->
+<!-- DOCENTE LOBBY -->
 <div id="screen-docente-lobby" class="screen">
-  <div class="pin-label">PIN DE LA SESIÓN</div>
+  <div class="pin-label">PIN DE LA SESIÓN — proyecta esta pantalla</div>
   <div class="pin-display" id="d-pin-display">——</div>
-  <p class="text-muted text-center" style="margin-top:-8px">Proyecta esta pantalla · Los alumnos lo introducen en su dispositivo</p>
+  <p class="text-muted text-center" style="margin-top:-8px">Los alumnos abren la web e introducen este código</p>
   <div class="card" style="max-width:520px">
     <h2>👥 Alumnos conectados</h2>
     <div class="stats-grid">
-      <div class="stat-box">
-        <div class="stat-num" id="d-count">0</div>
-        <div class="stat-lbl">Alumnos</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num" id="d-level-disp">Medio</div>
-        <div class="stat-lbl">Nivel</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num" id="d-time-disp">30s</div>
-        <div class="stat-lbl">Por pregunta</div>
-      </div>
+      <div class="stat-box"><div class="stat-num" id="d-count">0</div><div class="stat-lbl">Alumnos</div></div>
+      <div class="stat-box"><div class="stat-num" id="d-level-disp">Medio</div><div class="stat-lbl">Nivel</div></div>
+      <div class="stat-box"><div class="stat-num" id="d-time-disp">30s</div><div class="stat-lbl">Por pregunta</div></div>
     </div>
     <div class="student-list" id="d-student-list">
       <p class="text-muted text-center">Esperando jugadores…</p>
     </div>
     <div class="divider"></div>
-    <button class="btn btn-gold" id="d-start-btn" onclick="startSession()" disabled>
-      ▶ Iniciar partida
-    </button>
+    <button class="btn btn-gold" id="d-start-btn" onclick="startSession()" disabled>▶ Iniciar partida</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · DOCENTE PIZARRA (durante el juego)
-═══════════════════════════════════════════════════════════ -->
+<!-- DOCENTE PIZARRA -->
 <div id="screen-docente-pizarra" class="screen">
   <div class="pizarra">
     <div style="display:flex;justify-content:space-between;align-items:center">
@@ -715,12 +359,12 @@
     </div>
     <div class="pizarra-q" id="dp-question">…</div>
     <div class="pizarra-options" id="dp-options"></div>
-    <div class="responses-bar">
+    <div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
-        <span class="text-muted" style="font-size:0.8rem">Respuestas recibidas</span>
-        <span style="font-size:0.85rem;font-weight:700" id="dp-resp-count">0 / 0</span>
+        <span class="text-muted" style="font-size:.8rem">Respuestas recibidas</span>
+        <span style="font-size:.85rem;font-weight:700" id="dp-resp-count">0 / 0</span>
       </div>
-      <div style="background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;height:10px">
+      <div style="background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;height:10px">
         <div class="responses-bar-inner" id="dp-resp-bar" style="width:0%"></div>
       </div>
     </div>
@@ -731,31 +375,96 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCREEN · DOCENTE RESULTS
-═══════════════════════════════════════════════════════════ -->
+<!-- DOCENTE RESULTS -->
 <div id="screen-docente-results" class="screen">
-  <div class="logo">
-    <span class="trophy">🏆</span>
-    <h1>Resultados Finales</h1>
-  </div>
+  <div class="logo"><span class="trophy">🏆</span><h1>Resultados Finales</h1></div>
   <div class="card" style="max-width:560px">
     <h2>🥇 Podio</h2>
     <div class="podium" id="dr-podium"></div>
     <div class="divider"></div>
     <h2>📊 Clasificación completa</h2>
-    <div id="dr-list" class="student-list" style="max-height:300px"></div>
+    <div id="dr-list" class="student-list" style="max-height:280px"></div>
     <div class="divider"></div>
     <div class="row">
-      <button class="btn btn-gold" onclick="downloadCSV()">📥 Descargar CSV</button>
+      <button class="btn btn-gold" onclick="downloadCSV(myPin)">📥 Descargar CSV</button>
+      <button class="btn btn-purple" onclick="goto('screen-panel-login')">📊 Panel docente</button>
+    </div>
+    <div style="margin-top:10px">
       <button class="btn btn-outline" onclick="goto('screen-home')">🏠 Inicio</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     FEEDBACK OVERLAY
-═══════════════════════════════════════════════════════════ -->
+<!-- PANEL LOGIN -->
+<div id="screen-panel-login" class="screen">
+  <div class="logo"><span class="trophy">📊</span><h1>Panel del Docente</h1></div>
+  <div class="card" style="max-width:380px">
+    <h2>🔐 Acceso restringido</h2>
+    <label>Contraseña</label>
+    <input id="panel-pwd" type="password" placeholder="Contraseña…"
+      onkeydown="if(event.key==='Enter')checkPanelLogin()"/>
+    <div class="gap-10">
+      <button class="btn btn-purple" onclick="checkPanelLogin()">Entrar al panel</button>
+      <button class="btn btn-outline" onclick="goto('screen-home')">← Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL DOCENTE -->
+<div id="screen-panel" class="screen" style="justify-content:flex-start;padding-top:32px">
+  <div style="width:100%;max-width:700px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+      <div>
+        <h1 style="font-size:1.5rem;font-weight:800;color:var(--gold)">📊 Panel del Docente</h1>
+        <p class="text-muted" style="font-size:.82rem">Historial · Resultados · Evolución</p>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="goto('screen-home')">← Salir</button>
+    </div>
+    <!-- Tabs -->
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchTab('tab-sesiones')">📋 Sesiones</button>
+      <button class="tab-btn" onclick="switchTab('tab-alumnos')">👥 Alumnos</button>
+      <button class="tab-btn" onclick="switchTab('tab-evolucion')">📈 Evolución</button>
+    </div>
+    <!-- TAB: Sesiones -->
+    <div id="tab-sesiones" class="panel-section active">
+      <div id="panel-sessions-list">
+        <p class="text-muted text-center" style="padding:30px 0">Cargando sesiones…</p>
+      </div>
+    </div>
+    <!-- TAB: Alumnos -->
+    <div id="tab-alumnos" class="panel-section">
+      <div id="panel-students-list">
+        <p class="text-muted text-center" style="padding:30px 0">Cargando alumnos…</p>
+      </div>
+    </div>
+    <!-- TAB: Evolución -->
+    <div id="tab-evolucion" class="panel-section">
+      <p class="text-muted" style="margin-bottom:14px;font-size:.85rem">
+        Progresión de precisión por alumno a través de todas las sesiones registradas.
+      </p>
+      <div id="panel-evo-list">
+        <p class="text-muted text-center" style="padding:30px 0">Cargando datos…</p>
+      </div>
+    </div>
+    <!-- Detalle sesión (modal inline) -->
+    <div id="panel-session-detail" style="display:none;margin-top:20px">
+      <div class="card" style="max-width:700px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <h2 id="detail-title" style="margin-bottom:0">Sesión</h2>
+          <button class="btn btn-outline btn-sm" onclick="closeDetail()">✕ Cerrar</button>
+        </div>
+        <div class="stats-grid" id="detail-stats"></div>
+        <div class="divider"></div>
+        <div id="detail-list" class="student-list" style="max-height:320px"></div>
+        <div class="divider"></div>
+        <button class="btn btn-gold" id="detail-csv-btn">📥 Descargar CSV</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK -->
 <div class="feedback-overlay" id="feedback-overlay">
   <div class="feedback-box">
     <span class="feedback-icon" id="fb-icon">✅</span>
@@ -763,158 +472,14 @@
     <div class="feedback-pts" id="fb-pts">+100 pts</div>
   </div>
 </div>
-
-<!-- ═══════════════════════════════════════════════════════════
-     TOAST
-═══════════════════════════════════════════════════════════ -->
 <div class="toast" id="toast"></div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     FIREBASE SDK
-═══════════════════════════════════════════════════════════ -->
 <script type="module">
-// ─────────────────────────────────────────────────────────────
-// IMPORTS
-// ─────────────────────────────────────────────────────────────
-import { initializeApp }          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, update, onValue, push, remove, off }
-                                  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, update, onValue, remove, off }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ─────────────────────────────────────────────────────────────
-// QUESTION BANKS
-// ─────────────────────────────────────────────────────────────
-const QB = {
-  easy: [
-    {q:"3 + 5 = ?",       opts:[8,6,9,7],      a:0},
-    {q:"12 − 4 = ?",      opts:[7,8,9,6],      a:1},
-    {q:"6 × 3 = ?",       opts:[16,18,20,15],  a:1},
-    {q:"15 ÷ 3 = ?",      opts:[4,6,5,3],      a:2},
-    {q:"7 + 8 = ?",       opts:[14,15,16,13],  a:1},
-    {q:"20 − 9 = ?",      opts:[10,11,12,9],   a:1},
-    {q:"4 × 4 = ?",       opts:[12,14,16,18],  a:2},
-    {q:"18 ÷ 2 = ?",      opts:[7,8,9,10],     a:2},
-    {q:"25 + 13 = ?",     opts:[37,38,39,36],  a:1},
-    {q:"30 − 15 = ?",     opts:[14,15,16,13],  a:1},
-    {q:"5 × 6 = ?",       opts:[28,30,32,25],  a:1},
-    {q:"24 ÷ 4 = ?",      opts:[5,6,7,8],      a:1},
-    {q:"9 + 7 = ?",       opts:[15,16,17,14],  a:1},
-    {q:"40 − 17 = ?",     opts:[21,22,23,24],  a:2},
-    {q:"8 × 3 = ?",       opts:[22,24,26,28],  a:1},
-    {q:"36 ÷ 6 = ?",      opts:[5,6,7,8],      a:1},
-    {q:"14 + 19 = ?",     opts:[31,32,33,34],  a:2},
-    {q:"50 − 28 = ?",     opts:[20,21,22,23],  a:2},
-    {q:"7 × 7 = ?",       opts:[47,48,49,50],  a:2},
-    {q:"45 ÷ 9 = ?",      opts:[4,5,6,7],      a:1},
-  ],
-  medium: [
-    {q:"13 × 7 = ?",      opts:[89,91,93,95],   a:1},
-    {q:"144 ÷ 12 = ?",    opts:[10,11,12,13],   a:2},
-    {q:"256 + 348 = ?",   opts:[602,604,606,608],a:1},
-    {q:"500 − 237 = ?",   opts:[261,263,265,267],a:1},
-    {q:"8 × 9 = ?",       opts:[70,72,74,76],   a:1},
-    {q:"63 ÷ 7 = ?",      opts:[7,8,9,10],      a:2},
-    {q:"324 + 456 = ?",   opts:[778,780,782,784],a:1},
-    {q:"700 − 364 = ?",   opts:[334,336,338,340],a:1},
-    {q:"12 × 11 = ?",     opts:[130,132,134,136],a:1},
-    {q:"96 ÷ 8 = ?",      opts:[10,11,12,13],   a:2},
-    {q:"15 × 6 = ?",      opts:[86,88,90,92],   a:2},
-    {q:"132 ÷ 11 = ?",    opts:[10,11,12,13],   a:2},
-    {q:"¿Cuánto es el doble de 76?",opts:[148,150,152,154],a:2},
-    {q:"¿Cuánto es la mitad de 198?",opts:[97,98,99,100],  a:2},
-    {q:"¿Cuántos días tiene 3 semanas?",opts:[18,21,24,27],a:1},
-    {q:"1 hora y 20 min = ¿? minutos",opts:[70,75,80,85], a:2},
-    {q:"4² = ?",          opts:[8,12,16,20],    a:2},
-    {q:"3³ = ?",          opts:[9,18,27,36],    a:2},
-    {q:"¿Perímetro de cuadrado de lado 9?",opts:[27,32,36,40],a:2},
-    {q:"Área de rectángulo 8×5 = ?",opts:[35,38,40,45],a:2},
-  ],
-  hard: [
-    {q:"1/2 + 1/4 = ?",   opts:["1/6","3/4","2/6","1/4"],  a:1},
-    {q:"3/4 − 1/2 = ?",   opts:["1/4","2/4","1/2","1/8"],  a:0},
-    {q:"2/3 × 3 = ?",     opts:["6/9","2","1","2/3"],       a:1},
-    {q:"0,5 + 0,75 = ?",  opts:[1.0,1.1,1.25,1.5],         a:2},
-    {q:"2,4 × 3 = ?",     opts:[6.2,6.8,7.2,7.6],          a:2},
-    {q:"1/3 de 60 = ?",   opts:[15,18,20,24],               a:2},
-    {q:"3/5 de 100 = ?",  opts:[50,55,60,65],               a:2},
-    {q:"0,8 − 0,3 = ?",   opts:[0.4,0.5,0.6,0.7],          a:1},
-    {q:"¿Qué fracción es 4 de cada 8?",opts:["1/4","1/3","1/2","2/3"],a:2},
-    {q:"2/4 simplificada = ?",opts:["1/4","1/3","1/2","2/3"],a:2},
-    {q:"1,25 × 4 = ?",    opts:[4.5,4.8,5.0,5.2],          a:2},
-    {q:"6 ÷ 0,5 = ?",     opts:[3,6,10,12],                 a:3},
-    {q:"¿Qué es mayor: 3/5 ó 5/8?",opts:["3/5","5/8","Iguales","No se puede"],a:1},
-    {q:"25% de 80 = ?",   opts:[15,20,25,30],               a:1},
-    {q:"50% de 130 = ?",  opts:[55,60,65,70],               a:2},
-    {q:"10% de 450 = ?",  opts:[40,43,45,50],               a:2},
-    {q:"3/4 en decimal = ?",opts:[0.5,0.6,0.7,0.75],        a:3},
-    {q:"0,6 en fracción = ?",opts:["1/6","3/5","2/3","4/6"],a:1},
-    {q:"Área triángulo base 10, alt 6 = ?",opts:[28,30,32,34],a:1},
-    {q:"2² + 3² = ?",     opts:[10,12,13,15],               a:2},
-  ],
-  olimpiada: [
-    {q:"Si A+B=10 y A×B=24, ¿cuánto es A−B?",opts:[2,3,4,5],a:0},
-    {q:"¿Cuántos múltiplos de 3 hay entre 1 y 50?",opts:[15,16,17,18],a:1},
-    {q:"Un cuadrado de área 81 cm². Perímetro = ?",opts:[32,36,40,44],a:1},
-    {q:"3 × (7 + 5) − 4 × 3 = ?",opts:[24,25,26,27],a:0},
-    {q:"¿Qué número sigue? 2, 4, 8, 16, ?",opts:[24,28,30,32],a:3},
-    {q:"El 40% de X es 60. ¿Cuánto es X?",opts:[100,120,140,150],a:3},
-    {q:"¿Cuántos ceros tiene 10⁵?",opts:[4,5,6,10],a:1},
-    {q:"Un tren a 60 km/h · 30 min = ¿km?",opts:[25,28,30,35],a:2},
-    {q:"Si 5 canicas cuestan 2€, ¿qué cuestan 15?",opts:[5,6,7,8],a:1},
-    {q:"¿Cuál es la raíz cuadrada de 169?",opts:[11,12,13,14],a:2},
-    {q:"Suma de ángulos de un triángulo = ?",opts:[90,120,180,360],a:2},
-    {q:"¿Cuántos ejes de simetría tiene un cuadrado?",opts:[2,3,4,5],a:2},
-    {q:"N es par, múltiplo de 3 y de 5, y <50. N = ?",opts:[20,30,40,45],a:1},
-    {q:"(1+2+3+…+10) = ?",opts:[45,50,55,60],a:2},
-    {q:"Un depósito de 200 L se vacía al 25% por hora. ¿Cuánto queda tras 2 h?",opts:[50,75,100,112.5],a:3},
-    {q:"¿Cuántos triángulos tiene este número? 12345 — (uno por cada dígito impar)",opts:[2,3,4,5],a:1},
-    {q:"3! (factorial de 3) = ?",opts:[3,5,6,9],a:2},
-    {q:"LCM(4, 6) = ?",   opts:[8,10,12,16],a:2},
-    {q:"MCD(24, 36) = ?",  opts:[6,8,12,18],a:2},
-    {q:"¿Cuántos primos hay entre 10 y 30?",opts:[4,5,6,7],a:1},
-  ]
-};
-
-const AVATARS = ["🦊","🐼","🦉","🦁","🦄","🐯","🐸","🐧","🦋","🦀"];
-
-// ─────────────────────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────────────────────
-let db = null;
-let myRole   = null; // 'alumno' | 'docente' | 'practice'
-let myPin    = null;
-let myId     = null;
-let myName   = null;
-let myAvatar = null;
-let myStreak = 0;
-let myScore  = 0;
-let myCorrect = 0;
-let myWrong  = 0;
-
-// Docente state
-let sessionConfig = {};
-let currentQIdx   = 0;
-let questionList  = [];
-let sessionStudents = {};
-let docenteTimer  = null;
-
-// Alumno state
-let alumnoListeners = [];
-let alumnoTimerInterval = null;
-let alumnoTimeLeft = 30;
-let alumnoAnswered = false;
-let alumnoCurrentQKey = null;
-
-// Practice state
-let practiceQList = [];
-let practiceIdx   = 0;
-let practiceScore = 0;
-let practiceCorrect = 0;
-let practiceTimer = null;
-let practiceTimeLeft = 30;
-
-// ─────────────────────────────────────────────────────────────
-// FIREBASE INIT (config fija — ningún dispositivo necesita configurar nada)
-// ─────────────────────────────────────────────────────────────
+// ── CONFIG FIREBASE ────────────────────────────────────────────
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyB8s3u_FSLZ3IIKZNmjBZdYmvj91zUNEQ0",
   authDomain:        "olimpiadas-mate-4.firebaseapp.com",
@@ -924,589 +489,633 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "569445798924",
   appId:             "1:569445798924:web:2ce69ab035ce2a89df0a29"
 };
-
-function loadFirebase() {
-  try {
-    const app = initializeApp(FIREBASE_CONFIG, "olimpiadas");
-    db = getDatabase(app);
-    return true;
-  } catch(e) {
-    return false;
-  }
+let db = null;
+function initDB() {
+  if (db) return true;
+  try { db = getDatabase(initializeApp(FIREBASE_CONFIG,"olimpiadas")); return true; }
+  catch(e) { return false; }
 }
+initDB();
 
-window.saveFirebaseConfig = function() {
-  showToast("✅ Firebase ya está configurado");
-  goto('screen-home');
+// ── QUESTION BANK ──────────────────────────────────────────────
+const QB = {
+  easy:[
+    {q:"35 + 40 = ?",          opts:[70,75,80,65],     a:1},
+    {q:"64 + 25 = ?",          opts:[87,88,89,86],     a:2},
+    {q:"53 + 38 = ?",          opts:[89,90,91,88],     a:2},
+    {q:"47 + 46 = ?",          opts:[91,92,93,94],     a:2},
+    {q:"76 − 34 = ?",          opts:[40,41,42,43],     a:2},
+    {q:"85 − 47 = ?",          opts:[36,37,38,39],     a:2},
+    {q:"120 − 65 = ?",         opts:[53,54,55,56],     a:2},
+    {q:"200 − 83 = ?",         opts:[115,116,117,118], a:2},
+    {q:"¿El doble de 34?",     opts:[64,66,68,70],     a:2},
+    {q:"¿El doble de 57?",     opts:[110,112,114,116], a:2},
+    {q:"¿La mitad de 84?",     opts:[40,41,42,43],     a:2},
+    {q:"¿La mitad de 130?",    opts:[60,63,65,67],     a:2},
+    {q:"37 × 10 = ?",          opts:[307,370,3700,37], a:1},
+    {q:"540 ÷ 10 = ?",         opts:[5400,504,54,5],   a:2},
+    {q:"6 × 100 = ?",          opts:[60,600,6000,606], a:1},
+    {q:"800 ÷ 100 = ?",        opts:[80,8,800,88],     a:1},
+    {q:"25 + 25 + 25 = ?",     opts:[70,72,75,78],     a:2},
+    {q:"99 + 1 = ?",           opts:[99,100,101,110],  a:1},
+    {q:"150 + 150 = ?",        opts:[200,250,300,350], a:2},
+    {q:"400 − 150 = ?",        opts:[200,225,250,275], a:2},
+    {q:"¿El doble de 45?",     opts:[80,85,90,95],     a:2},
+    {q:"¿La mitad de 96?",     opts:[46,47,48,49],     a:2},
+    {q:"70 × 10 = ?",          opts:[7,700,7000,70],   a:1},
+    {q:"3000 ÷ 10 = ?",        opts:[30,300,3000,3],   a:1},
+    {q:"48 + 52 = ?",          opts:[98,99,100,101],   a:2},
+  ],
+  medium:[
+    {q:"7 × 8 = ?",            opts:[54,56,58,60],     a:1},
+    {q:"9 × 6 = ?",            opts:[52,54,56,58],     a:1},
+    {q:"8 × 8 = ?",            opts:[60,62,64,66],     a:2},
+    {q:"7 × 9 = ?",            opts:[61,63,65,67],     a:1},
+    {q:"6 × 6 = ?",            opts:[30,33,36,39],     a:2},
+    {q:"56 ÷ 7 = ?",           opts:[6,7,8,9],         a:2},
+    {q:"72 ÷ 8 = ?",           opts:[7,8,9,10],        a:2},
+    {q:"63 ÷ 9 = ?",           opts:[6,7,8,9],         a:1},
+    {q:"48 ÷ 6 = ?",           opts:[6,7,8,9],         a:2},
+    {q:"45 ÷ 5 = ?",           opts:[7,8,9,10],        a:2},
+    {q:"324 + 258 = ?",        opts:[570,572,580,582], a:3},
+    {q:"507 + 386 = ?",        opts:[881,889,893,897], a:2},
+    {q:"600 − 247 = ?",        opts:[351,353,355,357], a:1},
+    {q:"803 − 364 = ?",        opts:[437,439,441,443], a:1},
+    {q:"25 × 100 = ?",         opts:[250,2500,25000,2050],a:1},
+    {q:"4700 ÷ 100 = ?",       opts:[4,47,470,4700],   a:1},
+    {q:"36 × 1000 = ?",        opts:[360,3600,36000,360000],a:2},
+    {q:"8000 ÷ 1000 = ?",      opts:[8,80,800,8000],   a:0},
+    {q:"¿El doble de 125?",    opts:[240,245,250,255], a:2},
+    {q:"¿La mitad de 340?",    opts:[160,165,170,175], a:2},
+    {q:"9 × 7 = ?",            opts:[56,61,63,67],     a:2},
+    {q:"84 ÷ 7 = ?",           opts:[10,11,12,13],     a:2},
+    {q:"5 × 8 × 2 = ?",        opts:[60,70,80,90],     a:2},
+    {q:"400 + 375 = ?",        opts:[725,750,775,800], a:2},
+    {q:"900 − 436 = ?",        opts:[454,462,464,474], a:2},
+  ],
+  hard:[
+    {q:"456 + 378 = ?",        opts:[824,830,834,840], a:2},
+    {q:"702 − 468 = ?",        opts:[224,230,234,244], a:2},
+    {q:"375 + 248 = ?",        opts:[611,619,623,631], a:2},
+    {q:"804 − 597 = ?",        opts:[201,205,207,209], a:2},
+    {q:"48 × 10 = ?",          opts:[408,480,4800,4080],a:1},
+    {q:"3600 ÷ 100 = ?",       opts:[3,36,360,3600],   a:1},
+    {q:"250 × 1000 = ?",       opts:[2500,25000,250000,2500000],a:2},
+    {q:"72000 ÷ 1000 = ?",     opts:[7,72,720,7200],   a:1},
+    {q:"¿El doble de 348?",    opts:[686,692,696,700], a:2},
+    {q:"¿La mitad de 570?",    opts:[275,280,285,290], a:2},
+    {q:"¿El doble de 475?",    opts:[940,945,950,955], a:2},
+    {q:"¿La mitad de 730?",    opts:[355,360,365,370], a:2},
+    {q:"6 × 7 × 0 = ?",        opts:[0,42,67,420],     a:0},
+    {q:"9 × 9 = ?",            opts:[78,80,81,82],     a:2},
+    {q:"132 ÷ 11 = ?",         opts:[10,11,12,13],     a:2},
+    {q:"144 ÷ 12 = ?",         opts:[10,11,12,13],     a:2},
+    {q:"500 + 375 + 125 = ?",  opts:[900,950,1000,1050],a:2},
+    {q:"1000 − 437 = ?",       opts:[553,561,563,573], a:2},
+    {q:"Redondea 364 a la decena",   opts:[300,360,370,400],a:2},
+    {q:"Redondea 748 a la centena",  opts:[600,700,800,900],a:1},
+    {q:"Redondea 85 a la decena",    opts:[80,85,90,100], a:2},
+    {q:"¿Cuánto es 4 × 25?",   opts:[80,100,120,125],  a:1},
+    {q:"¿Cuánto es 8 × 125?",  opts:[800,900,1000,1100],a:2},
+    {q:"450 ÷ 9 = ?",          opts:[45,50,55,60],     a:1},
+    {q:"360 ÷ 6 = ?",          opts:[50,55,60,65],     a:2},
+  ],
+  olimpiada:[
+    {q:"(6 × 7) + 8 = ?",            opts:[48,50,52,54],    a:2},
+    {q:"(9 × 8) − 12 = ?",           opts:[58,60,62,64],    a:1},
+    {q:"(5 × 6) + (4 × 3) = ?",      opts:[40,42,44,46],    a:1},
+    {q:"(7 × 7) − (3 × 4) = ?",      opts:[35,36,37,38],    a:2},
+    {q:"50 − (6 × 7) = ?",           opts:[6,7,8,9],        a:2},
+    {q:"(100 ÷ 4) + 15 = ?",         opts:[38,40,42,44],    a:1},
+    {q:"(8 × 9) ÷ 6 = ?",            opts:[10,11,12,13],    a:2},
+    {q:"(3 × 4) × (2 × 5) = ?",      opts:[100,110,120,130],a:2},
+    {q:"200 − (7 × 8) = ?",          opts:[142,144,146,148],a:2},
+    {q:"(6 × 6) + (7 × 7) = ?",      opts:[83,85,87,89],    a:1},
+    {q:"(54 ÷ 6) × 7 = ?",           opts:[56,60,63,66],    a:2},
+    {q:"(80 ÷ 8) + (9 × 6) = ?",     opts:[60,62,64,66],    a:3},
+    {q:"(25 × 4) − (6 × 8) = ?",     opts:[50,52,54,56],    a:0},
+    {q:"(1000 ÷ 10) − (7 × 9) = ?",  opts:[34,36,37,38],    a:2},
+    {q:"(45 ÷ 9) × (6 × 2) = ?",     opts:[56,58,60,62],    a:2},
+    {q:"(7 × 8) + (56 ÷ 7) = ?",     opts:[62,63,64,65],    a:2},
+    {q:"Doble de 36, más 8 = ?",      opts:[76,78,80,82],    a:2},
+    {q:"Mitad de 120, menos 15 = ?",  opts:[40,43,45,47],    a:2},
+    {q:"Triple de 25 = ?",            opts:[65,70,75,80],    a:2},
+    {q:"(300 ÷ 100) × (8 × 7) = ?",  opts:[162,166,168,170],a:2},
+    {q:"(9 × 9) − (8 × 8) = ?",      opts:[15,16,17,18],    a:2},
+    {q:"(6 × 7) ÷ (3 × 2) = ?",      opts:[5,6,7,8],        a:2},
+    {q:"50 + (8 × 6) − 20 = ?",      opts:[74,76,78,80],    a:1},
+    {q:"(7 × 6) + (7 × 4) = ?",      opts:[68,70,72,74],    a:1},
+    {q:"(100 − 37) − (4 × 8) = ?",   opts:[29,30,31,32],    a:2},
+  ]
 };
+const AVATARS = ["🦊","🐼","🦉","🦁","🦄","🐯","🐸","🐧","🦋","🦀"];
+const LEVEL_NAMES = {easy:"Fácil",medium:"Medio",hard:"Alto",olimpiada:"Olimpiada 🏆"};
 
-// ─────────────────────────────────────────────────────────────
-// NAVIGATION
-// ─────────────────────────────────────────────────────────────
+// ── STATE ──────────────────────────────────────────────────────
+let myRole=null, myPin=null, myId=null, myName=null, myAvatar=null;
+let myStreak=0, myScore=0, myCorrect=0, myWrong=0;
+let sessionConfig={}, currentQIdx=0, questionList=[], sessionStudents={};
+let docenteTimer=null, docenteRespListener=null;
+let alumnoTimerInterval=null, alumnoTimeLeft=30, alumnoAnswered=false;
+let alumnoConfigListener=null;
+let practiceQList=[], practiceIdx=0, practiceScore=0, practiceCorrect=0;
+let practiceTimer=null, practiceTimeLeft=30;
+
+// ── NAV ────────────────────────────────────────────────────────
 window.goto = function(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 };
 
-// ─────────────────────────────────────────────────────────────
-// AVATAR GRID
-// ─────────────────────────────────────────────────────────────
-let selectedAvatar = AVATARS[0];
-function buildAvatarGrid() {
-  const g = document.getElementById('avatar-grid');
-  g.innerHTML = '';
-  AVATARS.forEach((a,i) => {
-    const btn = document.createElement('button');
-    btn.className = 'avatar-btn' + (i===0?' selected':'');
-    btn.textContent = a;
-    btn.onclick = () => {
-      document.querySelectorAll('.avatar-btn').forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-      selectedAvatar = a;
-    };
-    g.appendChild(btn);
-  });
+// ── UTILS ──────────────────────────────────────────────────────
+function genPin(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from({length:6},()=>c[Math.floor(Math.random()*c.length)]).join('')}
+function uid(){return Math.random().toString(36).slice(2,10)}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function showToast(msg,dur=2800){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur)}
+function showFeedback(ok,pts){
+  const ov=document.getElementById('feedback-overlay');
+  document.getElementById('fb-icon').textContent=ok?'✅':'❌';
+  document.getElementById('fb-msg').textContent=ok?'¡Correcto!':'Fallaste';
+  document.getElementById('fb-pts').textContent=ok?`+${pts} pts`:'';
+  ov.classList.add('show');setTimeout(()=>ov.classList.remove('show'),1400);
 }
-buildAvatarGrid();
-
-// ─────────────────────────────────────────────────────────────
-// UTILS
-// ─────────────────────────────────────────────────────────────
-function genPin() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({length:6}, ()=>chars[Math.floor(Math.random()*chars.length)]).join('');
-}
-function uid() { return Math.random().toString(36).slice(2,10); }
-function shuffle(arr) { return [...arr].sort(()=>Math.random()-0.5); }
-
-function showToast(msg, dur=2800) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), dur);
-}
-
-function showFeedback(correct, pts) {
-  const ov = document.getElementById('feedback-overlay');
-  document.getElementById('fb-icon').textContent = correct ? '✅' : '❌';
-  document.getElementById('fb-msg').textContent  = correct ? '¡Correcto!' : 'Fallaste';
-  document.getElementById('fb-pts').textContent  = correct ? `+${pts} pts` : '';
-  ov.classList.add('show');
-  setTimeout(()=>ov.classList.remove('show'), 1400);
-}
-
-function buildScoreList(students, myId, containerId) {
-  const list = Object.values(students)
-    .sort((a,b) => b.score - a.score);
-  const el = document.getElementById(containerId);
-  el.innerHTML = '';
-  list.forEach((s,i) => {
-    const row = document.createElement('div');
-    row.className = 'score-row' + (s.id===myId?' me':'');
-    const medals = ['🥇','🥈','🥉'];
-    const posClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
-    const acc = s.total ? Math.round(s.correct/s.total*100) : 0;
-    row.innerHTML = `
-      <span class="score-pos ${posClass}">${medals[i]||i+1}</span>
-      <span class="score-avatar">${s.avatar}</span>
+function buildScoreList(studentsObj, highlightId, containerId){
+  const list=Object.values(studentsObj).sort((a,b)=>b.score-a.score);
+  const el=document.getElementById(containerId);
+  el.innerHTML='';
+  list.forEach((s,i)=>{
+    const row=document.createElement('div');
+    row.className='score-row'+(s.id===highlightId?' me':'');
+    const medals=['🥇','🥈','🥉'];
+    const posClass=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const acc=s.total?Math.round(s.correct/s.total*100):0;
+    row.innerHTML=`<span class="score-pos ${posClass}">${medals[i]||i+1}</span>
+      <span class="score-avatar">${s.avatar||'🦊'}</span>
       <span class="score-name">${s.name}</span>
       <span class="score-acc">${acc}%</span>
       <span class="score-pts">${s.score} pts</span>`;
     el.appendChild(row);
   });
 }
-
-// ─────────────────────────────────────────────────────────────
-// QUESTION GENERATOR
-// ─────────────────────────────────────────────────────────────
-function generateQuestions(level, n) {
-  const bank = QB[level] || QB.medium;
-  const shuffled = shuffle(bank).slice(0, Math.min(n, bank.length));
-  return shuffled.map(q => {
-    // Randomize option order
-    const idxMap = [0,1,2,3];
-    const shuffledIdx = shuffle(idxMap);
-    const newOpts = shuffledIdx.map(i => q.opts[i]);
-    const newAnswerIdx = shuffledIdx.indexOf(q.a);
-    return { q: q.q, opts: newOpts, a: newAnswerIdx };
+function generateQuestions(level,n){
+  const bank=QB[level]||QB.medium;
+  return shuffle(bank).slice(0,Math.min(n,bank.length)).map(q=>{
+    const idx=shuffle([0,1,2,3]);
+    return {q:q.q, opts:idx.map(i=>q.opts[i]), a:idx.indexOf(q.a)};
   });
 }
 
-// ─────────────────────────────────────────────────────────────
-// PRACTICE MODE
-// ─────────────────────────────────────────────────────────────
-window.startPractice = function() {
-  practiceQList  = generateQuestions('medium', 10);
-  practiceIdx    = 0;
-  practiceScore  = 0;
-  practiceCorrect = 0;
-  myStreak       = 0;
-  goto('screen-practice');
-  showPracticeQuestion();
+// ── AVATAR GRID ────────────────────────────────────────────────
+let selectedAvatar=AVATARS[0];
+(function buildAvatarGrid(){
+  const g=document.getElementById('avatar-grid');
+  AVATARS.forEach((a,i)=>{
+    const btn=document.createElement('button');
+    btn.className='avatar-btn'+(i===0?' selected':'');
+    btn.textContent=a;
+    btn.onclick=()=>{document.querySelectorAll('.avatar-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedAvatar=a;};
+    g.appendChild(btn);
+  });
+})();
+
+// ── CSV HELPER ─────────────────────────────────────────────────
+window.downloadCSV = function(pin) {
+  get(ref(db,`history/${pin}/students`)).then(snap=>{
+    const students=Object.values(snap.val()||{}).sort((a,b)=>b.score-a.score);
+    const rows=[['Posición','Nombre','Puntuación','Correctas','Total','Precisión%','Índice IAO']];
+    students.forEach((s,i)=>{
+      const acc=s.total?Math.round(s.correct/s.total*100):0;
+      const iao=(acc*.6+Math.round(acc/10)*4).toFixed(1);
+      rows.push([i+1,s.name,s.score,s.correct||0,s.total||0,acc,iao]);
+    });
+    const csv=rows.map(r=>r.join(',')).join('\n');
+    const a=document.createElement('a');
+    a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+    a.download=`olimpiadas_${pin}_${new Date().toLocaleDateString('es-ES').replace(/\//g,'-')}.csv`;
+    a.click();
+  });
 };
 
-function showPracticeQuestion() {
-  if (practiceIdx >= practiceQList.length) { endPractice(); return; }
-  const q = practiceQList[practiceIdx];
-  document.getElementById('pq-counter').textContent = `Pregunta ${practiceIdx+1} / ${practiceQList.length}`;
-  document.getElementById('pq-question').textContent = q.q;
-  document.getElementById('pq-streak').textContent = `🔥 ${myStreak} racha`;
-
-  const grid = document.getElementById('pq-options');
-  grid.innerHTML = '';
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.textContent = opt;
-    btn.onclick = () => handlePracticeAnswer(i, q.a, q.opts.length);
-    grid.appendChild(btn);
-  });
-
-  practiceTimeLeft = 30;
-  updatePracticeBar();
-  clearInterval(practiceTimer);
-  practiceTimer = setInterval(()=>{
-    practiceTimeLeft--;
-    updatePracticeBar();
-    if (practiceTimeLeft <= 0) { clearInterval(practiceTimer); handlePracticeAnswer(-1, q.a, q.opts.length); }
-  }, 1000);
+// ── PRACTICE ───────────────────────────────────────────────────
+window.startPractice=function(){
+  practiceQList=generateQuestions('medium',10);
+  practiceIdx=practiceScore=practiceCorrect=myStreak=0;
+  goto('screen-practice');showPracticeQuestion();
+};
+function showPracticeQuestion(){
+  if(practiceIdx>=practiceQList.length){endPractice();return;}
+  const q=practiceQList[practiceIdx];
+  document.getElementById('pq-counter').textContent=`Pregunta ${practiceIdx+1} / ${practiceQList.length}`;
+  document.getElementById('pq-question').textContent=q.q;
+  document.getElementById('pq-streak').textContent=`🔥 ${myStreak} racha`;
+  const grid=document.getElementById('pq-options');grid.innerHTML='';
+  q.opts.forEach((opt,i)=>{const btn=document.createElement('button');btn.className='option-btn';btn.textContent=opt;btn.onclick=()=>handlePracticeAnswer(i,q.a);grid.appendChild(btn);});
+  practiceTimeLeft=30;updatePracticeBar();clearInterval(practiceTimer);
+  practiceTimer=setInterval(()=>{practiceTimeLeft--;updatePracticeBar();if(practiceTimeLeft<=0){clearInterval(practiceTimer);handlePracticeAnswer(-1,q.a);}},1000);
 }
-
-function updatePracticeBar() {
-  const pct = practiceTimeLeft / 30 * 100;
-  document.getElementById('pq-bar').style.width = pct + '%';
-  document.getElementById('pq-timer').textContent = practiceTimeLeft;
-  document.getElementById('pq-bar').classList.toggle('urgent', practiceTimeLeft <= 8);
+function updatePracticeBar(){
+  const pct=practiceTimeLeft/30*100;
+  document.getElementById('pq-bar').style.width=pct+'%';
+  document.getElementById('pq-timer').textContent=practiceTimeLeft;
+  document.getElementById('pq-bar').classList.toggle('urgent',practiceTimeLeft<=8);
 }
-
-function handlePracticeAnswer(chosen, correct, total) {
+function handlePracticeAnswer(chosen,correct){
   clearInterval(practiceTimer);
-  const btns = document.querySelectorAll('#pq-options .option-btn');
-  btns.forEach(b => b.disabled = true);
-  const isCorrect = chosen === correct;
-  if (isCorrect) {
-    myStreak++;
-    const bonus = Math.min(myStreak * 10, 50);
-    const pts = 100 + bonus + Math.floor(practiceTimeLeft * 2);
-    practiceScore += pts;
-    practiceCorrect++;
-    btns[chosen].classList.add('correct');
-    showFeedback(true, pts);
-  } else {
-    myStreak = 0;
-    if (chosen >= 0) btns[chosen].classList.add('wrong');
-    btns[correct].classList.add('correct');
-    showFeedback(false, 0);
-  }
-  document.getElementById('pq-streak').textContent = `🔥 ${myStreak} racha`;
-  practiceIdx++;
-  setTimeout(showPracticeQuestion, 1600);
+  document.querySelectorAll('#pq-options .option-btn').forEach(b=>b.disabled=true);
+  const ok=chosen===correct;
+  const btns=document.querySelectorAll('#pq-options .option-btn');
+  if(ok){myStreak++;const pts=100+Math.min(myStreak*10,50)+Math.floor(practiceTimeLeft*2);practiceScore+=pts;practiceCorrect++;btns[chosen].classList.add('correct');showFeedback(true,pts);}
+  else{myStreak=0;if(chosen>=0)btns[chosen].classList.add('wrong');btns[correct].classList.add('correct');showFeedback(false,0);}
+  document.getElementById('pq-streak').textContent=`🔥 ${myStreak} racha`;
+  practiceIdx++;setTimeout(showPracticeQuestion,1600);
 }
-
-window.endPractice = function() {
+window.endPractice=function(){
   clearInterval(practiceTimer);
-  const wrong = practiceIdx - practiceCorrect;
-  document.getElementById('pr-pts').textContent = `${practiceScore} pts`;
-  document.getElementById('pr-stats').textContent = `${practiceCorrect} correctas · ${wrong} falladas`;
-  const pct = practiceIdx ? practiceCorrect/practiceIdx : 0;
-  document.getElementById('pr-medal').textContent = pct>=0.9?'🥇':pct>=0.7?'🥈':'🥉';
+  const wrong=practiceIdx-practiceCorrect;
+  document.getElementById('pr-pts').textContent=`${practiceScore} pts`;
+  document.getElementById('pr-stats').textContent=`${practiceCorrect} correctas · ${wrong} falladas`;
+  const pct=practiceIdx?practiceCorrect/practiceIdx:0;
+  document.getElementById('pr-medal').textContent=pct>=.9?'🥇':pct>=.7?'🥈':'🥉';
   goto('screen-practice-results');
 };
 
-// ─────────────────────────────────────────────────────────────
-// DOCENTE · CREATE SESSION
-// ─────────────────────────────────────────────────────────────
-window.createSession = function() {
-  if (!db) {
-    if (!loadFirebase()) {
-      showToast("❌ Error de conexión con Firebase");
-      return;
-    }
-  }
-  const level  = document.getElementById('d-level').value;
-  const numq   = parseInt(document.getElementById('d-numq').value);
-  const time   = parseInt(document.getElementById('d-time').value);
-
-  myPin = genPin();
-  myRole = 'docente';
-  questionList = generateQuestions(level, numq);
-
-  sessionConfig = { level, numq, time, pin: myPin, status: 'lobby', currentQ: -1 };
-
-  const levelNames = {easy:'Fácil', medium:'Medio', hard:'Alto', olimpiada:'Olimpiada 🏆'};
-
-  set(ref(db, `sessions/${myPin}`), {
-    config: sessionConfig,
-    questions: questionList,
-    students: {},
-    responses: {}
-  }).then(() => {
-    document.getElementById('d-pin-display').textContent = myPin;
-    document.getElementById('d-level-disp').textContent = levelNames[level];
-    document.getElementById('d-time-disp').textContent  = time+'s';
-    document.getElementById('d-count').textContent = '0';
-    goto('screen-docente-lobby');
-    listenStudents();
-  }).catch(e => {
-    showToast("❌ Error Firebase: " + e.message);
-  });
+// ── DOCENTE CREATE ─────────────────────────────────────────────
+window.createSession=function(){
+  const level=document.getElementById('d-level').value;
+  const numq=parseInt(document.getElementById('d-numq').value);
+  const time=parseInt(document.getElementById('d-time').value);
+  const sessionName=document.getElementById('d-session-name').value.trim()||`Sesión ${new Date().toLocaleDateString('es-ES')}`;
+  myPin=genPin(); myRole='docente';
+  questionList=generateQuestions(level,numq);
+  sessionConfig={level,numq,time,pin:myPin,status:'lobby',currentQ:-1,name:sessionName,date:Date.now()};
+  set(ref(db,`sessions/${myPin}`),{config:sessionConfig,questions:questionList,students:{},responses:{}})
+    .then(()=>{
+      document.getElementById('d-pin-display').textContent=myPin;
+      document.getElementById('d-level-disp').textContent=LEVEL_NAMES[level];
+      document.getElementById('d-time-disp').textContent=time+'s';
+      document.getElementById('d-count').textContent='0';
+      goto('screen-docente-lobby');
+      listenStudents();
+    }).catch(e=>showToast('❌ Error Firebase: '+e.message));
 };
 
-function listenStudents() {
-  const studentsRef = ref(db, `sessions/${myPin}/students`);
-  onValue(studentsRef, snap => {
-    sessionStudents = snap.val() || {};
-    const count = Object.keys(sessionStudents).length;
-    document.getElementById('d-count').textContent = count;
-    document.getElementById('d-start-btn').disabled = count === 0;
-
-    const list = document.getElementById('d-student-list');
-    list.innerHTML = '';
-    if (count === 0) {
-      list.innerHTML = '<p class="text-muted text-center">Esperando jugadores…</p>';
-      return;
-    }
-    Object.values(sessionStudents).forEach(s => {
-      const row = document.createElement('div');
-      row.className = 'student-row';
-      row.innerHTML = `<span>${s.avatar}</span><span style="flex:1;font-weight:600">${s.name}</span><div class="student-dot"></div>`;
+function listenStudents(){
+  onValue(ref(db,`sessions/${myPin}/students`),snap=>{
+    sessionStudents=snap.val()||{};
+    const count=Object.keys(sessionStudents).length;
+    document.getElementById('d-count').textContent=count;
+    document.getElementById('d-start-btn').disabled=count===0;
+    const list=document.getElementById('d-student-list');list.innerHTML='';
+    if(!count){list.innerHTML='<p class="text-muted text-center">Esperando jugadores…</p>';return;}
+    Object.values(sessionStudents).forEach(s=>{
+      const row=document.createElement('div');row.className='student-row';
+      row.innerHTML=`<span>${s.avatar||'🦊'}</span><span style="flex:1;font-weight:600">${s.name}</span><div class="student-dot"></div>`;
       list.appendChild(row);
     });
   });
 }
 
-// ─────────────────────────────────────────────────────────────
-// DOCENTE · START SESSION
-// ─────────────────────────────────────────────────────────────
-window.startSession = function() {
-  currentQIdx = 0;
-  update(ref(db, `sessions/${myPin}/config`), { status: 'playing', currentQ: 0 });
+// ── DOCENTE START ──────────────────────────────────────────────
+window.startSession=function(){
+  currentQIdx=0;
+  update(ref(db,`sessions/${myPin}/config`),{status:'playing',currentQ:0});
   goto('screen-docente-pizarra');
   showTeacherQuestion();
 };
 
-function showTeacherQuestion() {
-  if (currentQIdx >= questionList.length) { endSessionTeacher(); return; }
-  const q = questionList[currentQIdx];
-  const total = questionList.length;
-  const time  = sessionConfig.time;
-
-  document.getElementById('dp-counter').textContent = `Pregunta ${currentQIdx+1} / ${total}`;
-  document.getElementById('dp-question').textContent = q.q;
-
-  const opts = document.getElementById('dp-options');
-  opts.innerHTML = '';
-  q.opts.forEach((opt, i) => {
-    const d = document.createElement('div');
-    d.className = 'pizarra-opt' + (i===q.a?' correct':'');
-    d.textContent = opt;
-    opts.appendChild(d);
+function showTeacherQuestion(){
+  if(currentQIdx>=questionList.length){endSessionTeacher();return;}
+  const q=questionList[currentQIdx];
+  const time=sessionConfig.time;
+  document.getElementById('dp-counter').textContent=`Pregunta ${currentQIdx+1} / ${questionList.length}`;
+  document.getElementById('dp-question').textContent=q.q;
+  const opts=document.getElementById('dp-options');opts.innerHTML='';
+  q.opts.forEach((opt,i)=>{const d=document.createElement('div');d.className='pizarra-opt'+(i===q.a?' correct':'');d.textContent=opt;opts.appendChild(d);});
+  const studentCount=Object.keys(sessionStudents).length;
+  document.getElementById('dp-resp-count').textContent=`0 / ${studentCount}`;
+  document.getElementById('dp-resp-bar').style.width='0%';
+  document.getElementById('dp-next-btn').disabled=true;
+  // Clear previous listener
+  if(docenteRespListener){off(ref(db,`sessions/${myPin}/responses/${currentQIdx-1}`));docenteRespListener=null;}
+  set(ref(db,`sessions/${myPin}/responses/${currentQIdx}`),null);
+  docenteRespListener=onValue(ref(db,`sessions/${myPin}/responses/${currentQIdx}`),snap=>{
+    const resps=snap.val()||{};const count=Object.keys(resps).length;
+    const pct=studentCount?(count/studentCount*100):0;
+    document.getElementById('dp-resp-count').textContent=`${count} / ${studentCount}`;
+    document.getElementById('dp-resp-bar').style.width=pct+'%';
+    if(count>=studentCount&&studentCount>0)document.getElementById('dp-next-btn').disabled=false;
   });
-
-  const studentCount = Object.keys(sessionStudents).length;
-  document.getElementById('dp-resp-count').textContent = `0 / ${studentCount}`;
-  document.getElementById('dp-resp-bar').style.width = '0%';
-  document.getElementById('dp-next-btn').disabled = true;
-
-  // Clear old responses
-  set(ref(db, `sessions/${myPin}/responses/${currentQIdx}`), null);
-
-  // Listen responses
-  const respRef = ref(db, `sessions/${myPin}/responses/${currentQIdx}`);
-  onValue(respRef, snap => {
-    const resps = snap.val() || {};
-    const count = Object.keys(resps).length;
-    const pct = studentCount ? (count/studentCount*100) : 0;
-    document.getElementById('dp-resp-count').textContent = `${count} / ${studentCount}`;
-    document.getElementById('dp-resp-bar').style.width = pct + '%';
-    if (count >= studentCount && studentCount > 0) {
-      document.getElementById('dp-next-btn').disabled = false;
-    }
-  });
-
   // Timer
-  let tLeft = time;
-  document.getElementById('dp-timer').textContent = tLeft;
-  document.getElementById('dp-bar').style.width = '100%';
+  let tLeft=time;
+  document.getElementById('dp-timer').textContent=tLeft;
+  document.getElementById('dp-bar').style.width='100%';
   clearInterval(docenteTimer);
-  docenteTimer = setInterval(() => {
+  docenteTimer=setInterval(()=>{
     tLeft--;
-    const pct = tLeft/time*100;
-    document.getElementById('dp-timer').textContent = tLeft;
-    document.getElementById('dp-bar').style.width = pct+'%';
-    document.getElementById('dp-bar').classList.toggle('urgent', tLeft<=8);
-    if (tLeft <= 0) {
-      clearInterval(docenteTimer);
-      document.getElementById('dp-next-btn').disabled = false;
-    }
-  }, 1000);
+    document.getElementById('dp-timer').textContent=tLeft;
+    document.getElementById('dp-bar').style.width=(tLeft/time*100)+'%';
+    document.getElementById('dp-bar').classList.toggle('urgent',tLeft<=8);
+    if(tLeft<=0){clearInterval(docenteTimer);document.getElementById('dp-next-btn').disabled=false;}
+  },1000);
 }
 
-window.teacherNextQuestion = function() {
+window.teacherNextQuestion=function(){
   clearInterval(docenteTimer);
-  off(ref(db, `sessions/${myPin}/responses/${currentQIdx}`));
+  if(docenteRespListener){off(ref(db,`sessions/${myPin}/responses/${currentQIdx}`));docenteRespListener=null;}
   currentQIdx++;
-  if (currentQIdx >= questionList.length) {
-    endSessionTeacher();
-  } else {
-    update(ref(db, `sessions/${myPin}/config`), { currentQ: currentQIdx });
-    showTeacherQuestion();
-  }
+  if(currentQIdx>=questionList.length){endSessionTeacher();}
+  else{update(ref(db,`sessions/${myPin}/config`),{currentQ:currentQIdx});showTeacherQuestion();}
 };
 
-window.endSessionTeacher = function() {
+window.endSessionTeacher=function(){
   clearInterval(docenteTimer);
-  update(ref(db, `sessions/${myPin}/config`), { status: 'finished', currentQ: -1 });
-  goto('screen-docente-results');
-
-  // Fetch final students
-  get(ref(db, `sessions/${myPin}/students`)).then(snap => {
-    const students = snap.val() || {};
-    buildDocenterResults(students);
+  if(docenteRespListener){off(ref(db,`sessions/${myPin}/responses/${currentQIdx}`));docenteRespListener=null;}
+  update(ref(db,`sessions/${myPin}/config`),{status:'finished',currentQ:-1});
+  // Save to history
+  get(ref(db,`sessions/${myPin}/students`)).then(snap=>{
+    const students=snap.val()||{};
+    set(ref(db,`history/${myPin}`),{
+      config:sessionConfig,
+      students,
+      savedAt:Date.now()
+    });
+    buildDocenteResults(students);
+    goto('screen-docente-results');
   });
 };
 
-function buildDocenterResults(students) {
-  const list = Object.values(students).sort((a,b)=>b.score-a.score);
-
-  // Podium
-  const podiumEl = document.getElementById('dr-podium');
-  podiumEl.innerHTML = '';
-  const order = [1,0,2]; // silver, gold, bronze
-  order.forEach(i => {
-    if (!list[i]) return;
-    const s = list[i];
-    const cls = ['p2','p1','p3'][order.indexOf(i)];
-    const medal = ['🥇','🥈','🥉'][i];
-    const d = document.createElement('div');
-    d.className = 'podium-slot';
-    d.innerHTML = `
-      <div class="podium-block ${cls}">${s.avatar}</div>
-      <div class="podium-name">${s.name}</div>
-      <div class="podium-pts">${s.score} pts</div>`;
+function buildDocenteResults(students){
+  const list=Object.values(students).sort((a,b)=>b.score-a.score);
+  const podiumEl=document.getElementById('dr-podium');podiumEl.innerHTML='';
+  [1,0,2].forEach(i=>{
+    if(!list[i])return;
+    const s=list[i];const cls=['p2','p1','p3'][[1,0,2].indexOf(i)];
+    const d=document.createElement('div');d.className='podium-slot';
+    d.innerHTML=`<div class="podium-block ${cls}">${s.avatar||'🦊'}</div><div class="podium-name">${s.name}</div><div class="podium-pts">${s.score} pts</div>`;
     podiumEl.appendChild(d);
   });
-
-  // Full list
-  buildScoreList(students.reduce ? students : Object.fromEntries(list.map(s=>[s.id,s])), null, 'dr-list');
+  const obj=Object.fromEntries(list.map(s=>[s.id,s]));
+  buildScoreList(obj,null,'dr-list');
 }
 
-// ─────────────────────────────────────────────────────────────
-// CSV DOWNLOAD
-// ─────────────────────────────────────────────────────────────
-window.downloadCSV = function() {
-  get(ref(db, `sessions/${myPin}/students`)).then(snap => {
-    const students = Object.values(snap.val() || {}).sort((a,b)=>b.score-a.score);
-    const rows = [['Posición','Nombre','Avatar','Puntuación','Correctas','Total','Precisión%','Índice IAO']];
-    students.forEach((s,i) => {
-      const acc = s.total ? Math.round(s.correct/s.total*100) : 0;
-      const iao = (acc * 0.6 + (s.total ? Math.round(s.correct/s.total*10)*4 : 0)).toFixed(1);
-      rows.push([i+1, s.name, s.avatar, s.score, s.correct||0, s.total||0, acc, iao]);
-    });
-    const csv = rows.map(r=>r.join(',')).join('\n');
-    const a = document.createElement('a');
-    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-    a.download = `olimpiadas_${myPin}_${new Date().toLocaleDateString('es-ES').replace(/\//g,'-')}.csv`;
-    a.click();
-  });
+// ── ALUMNO JOIN ────────────────────────────────────────────────
+window.joinGame=function(){
+  const pin=document.getElementById('join-pin').value.trim().toUpperCase();
+  const name=document.getElementById('join-name').value.trim();
+  if(!pin||pin.length<4){showToast('⚠️ Introduce el PIN');return;}
+  if(!name){showToast('⚠️ Escribe tu nombre');return;}
+  myPin=pin;myName=name;myAvatar=selectedAvatar;myId=uid();
+  myScore=myStreak=myCorrect=myWrong=0;myRole='alumno';
+  get(ref(db,`sessions/${pin}/config`)).then(snap=>{
+    if(!snap.exists()){showToast('❌ PIN no encontrado');return;}
+    const cfg=snap.val();
+    if(cfg.status==='finished'){showToast('❌ Esta sesión ya terminó');return;}
+    sessionConfig=cfg;
+    set(ref(db,`sessions/${pin}/students/${myId}`),{id:myId,name,avatar:myAvatar,score:0,correct:0,total:0})
+      .then(()=>{
+        document.getElementById('wait-avatar').textContent=myAvatar;
+        document.getElementById('wait-name').textContent=name;
+        goto('screen-alumno-wait');
+        listenSessionStatus();
+      });
+  }).catch(()=>showToast('❌ Error al conectar. Verifica el PIN'));
 };
 
-// ─────────────────────────────────────────────────────────────
-// ALUMNO · JOIN
-// ─────────────────────────────────────────────────────────────
-window.joinGame = function() {
-  if (!db) {
-    if (!loadFirebase()) {
-      showToast("❌ Error de conexión. Comprueba el PIN");
-      return;
-    }
-  }
-  const pin  = document.getElementById('join-pin').value.trim().toUpperCase();
-  const name = document.getElementById('join-name').value.trim();
-  if (!pin || pin.length < 4)  { showToast("⚠️ Introduce el PIN"); return; }
-  if (!name)                   { showToast("⚠️ Escribe tu nombre"); return; }
-
-  myPin    = pin;
-  myName   = name;
-  myAvatar = selectedAvatar;
-  myId     = uid();
-  myScore  = 0;
-  myStreak = 0;
-  myCorrect = 0;
-  myWrong   = 0;
-  myRole   = 'alumno';
-
-  get(ref(db, `sessions/${pin}/config`)).then(snap => {
-    if (!snap.exists()) { showToast("❌ PIN no encontrado"); return; }
-    const cfg = snap.val();
-    if (cfg.status === 'finished') { showToast("❌ Esta sesión ya terminó"); return; }
-
-    // Register student
-    set(ref(db, `sessions/${pin}/students/${myId}`), {
-      id: myId, name, avatar: myAvatar, score: 0, correct: 0, total: 0
-    }).then(() => {
-      document.getElementById('wait-avatar').textContent = myAvatar;
-      document.getElementById('wait-name').textContent   = name;
-      goto('screen-alumno-wait');
-      listenSessionStatus();
-    });
-  }).catch(() => showToast("❌ Error al conectar. Verifica el PIN"));
-};
-
-function listenSessionStatus() {
-  const cfgRef = ref(db, `sessions/${myPin}/config`);
-  const h = onValue(cfgRef, snap => {
-    const cfg = snap.val();
-    if (!cfg) return;
-    if (cfg.status === 'playing' && cfg.currentQ >= 0) {
-      off(cfgRef, 'value', h);
+function listenSessionStatus(){
+  if(alumnoConfigListener){off(ref(db,`sessions/${myPin}/config`));alumnoConfigListener=null;}
+  alumnoConfigListener=onValue(ref(db,`sessions/${myPin}/config`),snap=>{
+    const cfg=snap.val();if(!cfg)return;
+    if(cfg.status==='playing'&&cfg.currentQ>=0){
+      off(ref(db,`sessions/${myPin}/config`));alumnoConfigListener=null;
       listenQuestion(cfg.currentQ);
     }
-    if (cfg.status === 'finished') {
-      off(cfgRef, 'value', h);
+    if(cfg.status==='finished'){
+      off(ref(db,`sessions/${myPin}/config`));alumnoConfigListener=null;
       showAlumnoResults();
     }
   });
-  alumnoListeners.push({ ref: cfgRef, h });
 }
 
-function listenQuestion(qIdx) {
-  alumnoAnswered = false;
-  alumnoCurrentQKey = qIdx;
-
-  get(ref(db, `sessions/${myPin}/questions/${qIdx}`)).then(snap => {
-    const q = snap.val();
-    if (!q) return;
-
-    const total = sessionConfig.numq || 10;
-    document.getElementById('aq-counter').textContent = `Pregunta ${qIdx+1} / ${total}`;
-    document.getElementById('aq-streak').textContent  = `🔥 ${myStreak}`;
-    document.getElementById('aq-question').textContent = q.q;
-
-    const grid = document.getElementById('aq-options');
-    grid.innerHTML = '';
-    q.opts.forEach((opt, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'option-btn';
-      btn.textContent = opt;
-      btn.onclick = () => handleAlumnoAnswer(i, q.a, qIdx);
-      grid.appendChild(btn);
-    });
-
+function listenQuestion(qIdx){
+  alumnoAnswered=false;
+  get(ref(db,`sessions/${myPin}/questions/${qIdx}`)).then(snap=>{
+    const q=snap.val();if(!q)return;
+    const total=sessionConfig.numq||10;
+    document.getElementById('aq-counter').textContent=`Pregunta ${qIdx+1} / ${total}`;
+    document.getElementById('aq-streak').textContent=`🔥 ${myStreak}`;
+    document.getElementById('aq-question').textContent=q.q;
+    const grid=document.getElementById('aq-options');grid.innerHTML='';
+    q.opts.forEach((opt,i)=>{const btn=document.createElement('button');btn.className='option-btn';btn.textContent=opt;btn.onclick=()=>handleAlumnoAnswer(i,q.a,qIdx);grid.appendChild(btn);});
     goto('screen-alumno-question');
-
-    // Timer
-    const timeLimit = sessionConfig.time || 30;
-    alumnoTimeLeft = timeLimit;
-    updateAlumnoBar(timeLimit);
-    clearInterval(alumnoTimerInterval);
-    alumnoTimerInterval = setInterval(()=>{
-      alumnoTimeLeft--;
-      updateAlumnoBar(timeLimit);
-      if (alumnoTimeLeft <= 0) {
-        clearInterval(alumnoTimerInterval);
-        if (!alumnoAnswered) handleAlumnoAnswer(-1, q.a, qIdx);
+    const timeLimit=sessionConfig.time||30;
+    alumnoTimeLeft=timeLimit;updateAlumnoBar(timeLimit);clearInterval(alumnoTimerInterval);
+    alumnoTimerInterval=setInterval(()=>{
+      alumnoTimeLeft--;updateAlumnoBar(timeLimit);
+      if(alumnoTimeLeft<=0){clearInterval(alumnoTimerInterval);if(!alumnoAnswered)handleAlumnoAnswer(-1,q.a,qIdx);}
+    },1000);
+    // Listen config for next Q or finish
+    if(alumnoConfigListener){off(ref(db,`sessions/${myPin}/config`));alumnoConfigListener=null;}
+    alumnoConfigListener=onValue(ref(db,`sessions/${myPin}/config`),snap2=>{
+      const cfg2=snap2.val();if(!cfg2)return;
+      if(cfg2.status==='finished'){
+        off(ref(db,`sessions/${myPin}/config`));alumnoConfigListener=null;
+        clearInterval(alumnoTimerInterval);showAlumnoResults();return;
       }
-    }, 1000);
-
-    // Listen for next question trigger
-    const cfgRef = ref(db, `sessions/${myPin}/config`);
-    onValue(cfgRef, snap2 => {
-      const cfg2 = snap2.val();
-      if (!cfg2) return;
-      if (cfg2.status === 'finished') {
-        off(cfgRef);
-        clearInterval(alumnoTimerInterval);
-        showAlumnoResults();
-        return;
-      }
-      if (cfg2.currentQ !== qIdx) {
-        off(cfgRef);
-        clearInterval(alumnoTimerInterval);
-        listenQuestion(cfg2.currentQ);
+      if(cfg2.currentQ!==qIdx){
+        off(ref(db,`sessions/${myPin}/config`));alumnoConfigListener=null;
+        clearInterval(alumnoTimerInterval);listenQuestion(cfg2.currentQ);
       }
     });
   });
+}
 
-  // Get session config if not loaded
-  if (!sessionConfig.time) {
-    get(ref(db, `sessions/${myPin}/config`)).then(s => {
-      sessionConfig = s.val() || {};
-    });
+function updateAlumnoBar(timeLimit){
+  const pct=alumnoTimeLeft/timeLimit*100;
+  document.getElementById('aq-bar').style.width=pct+'%';
+  document.getElementById('aq-timer').textContent=alumnoTimeLeft;
+  document.getElementById('aq-bar').classList.toggle('urgent',alumnoTimeLeft<=8);
+}
+
+function handleAlumnoAnswer(chosen,correct,qIdx){
+  if(alumnoAnswered)return;alumnoAnswered=true;clearInterval(alumnoTimerInterval);
+  const btns=document.querySelectorAll('#aq-options .option-btn');
+  btns.forEach(b=>b.disabled=true);
+  const ok=chosen===correct;
+  if(ok){
+    myStreak++;const pts=100+Math.min(myStreak*10,50)+Math.floor(alumnoTimeLeft*2);
+    myScore+=pts;myCorrect++;btns[chosen].classList.add('correct');showFeedback(true,pts);
+    update(ref(db,`sessions/${myPin}/students/${myId}`),{score:myScore,correct:myCorrect,total:myCorrect+myWrong});
+  }else{
+    myStreak=0;myWrong++;
+    if(chosen>=0)btns[chosen].classList.add('wrong');btns[correct].classList.add('correct');showFeedback(false,0);
+    update(ref(db,`sessions/${myPin}/students/${myId}`),{score:myScore,correct:myCorrect,total:myCorrect+myWrong});
   }
+  document.getElementById('aq-streak').textContent=`🔥 ${myStreak}`;
+  set(ref(db,`sessions/${myPin}/responses/${qIdx}/${myId}`),{chosen,correct:ok,time:alumnoTimeLeft});
 }
 
-function updateAlumnoBar(timeLimit) {
-  const pct = alumnoTimeLeft / timeLimit * 100;
-  document.getElementById('aq-bar').style.width = pct + '%';
-  document.getElementById('aq-timer').textContent = alumnoTimeLeft;
-  document.getElementById('aq-bar').classList.toggle('urgent', alumnoTimeLeft <= 8);
-}
-
-function handleAlumnoAnswer(chosen, correct, qIdx) {
-  if (alumnoAnswered) return;
-  alumnoAnswered = true;
-  clearInterval(alumnoTimerInterval);
-
-  const btns = document.querySelectorAll('#aq-options .option-btn');
-  btns.forEach(b => b.disabled = true);
-
-  const isCorrect = chosen === correct;
-  if (isCorrect) {
-    myStreak++;
-    const bonus = Math.min(myStreak * 10, 50);
-    const pts = 100 + bonus + Math.floor(alumnoTimeLeft * 2);
-    myScore  += pts;
-    myCorrect++;
-    btns[chosen].classList.add('correct');
-    showFeedback(true, pts);
-    update(ref(db, `sessions/${myPin}/students/${myId}`), {
-      score: myScore, correct: myCorrect, total: myCorrect + myWrong + 1
-    });
-  } else {
-    myStreak = 0;
-    myWrong++;
-    if (chosen >= 0) btns[chosen].classList.add('wrong');
-    btns[correct].classList.add('correct');
-    showFeedback(false, 0);
-    update(ref(db, `sessions/${myPin}/students/${myId}`), {
-      score: myScore, correct: myCorrect, total: myCorrect + myWrong
-    });
-  }
-  document.getElementById('aq-streak').textContent = `🔥 ${myStreak}`;
-
-  // Register response
-  set(ref(db, `sessions/${myPin}/responses/${qIdx}/${myId}`), {
-    chosen, correct: isCorrect, time: alumnoTimeLeft
-  });
-}
-
-function showAlumnoResults() {
-  get(ref(db, `sessions/${myPin}/students`)).then(snap => {
-    const students = snap.val() || {};
-    const me = students[myId] || { score: myScore, correct: myCorrect, avatar: myAvatar };
-    const total = myCorrect + myWrong;
-    const acc = total ? Math.round(myCorrect/total*100) : 0;
-
-    document.getElementById('ar-avatar').textContent = myAvatar;
-    document.getElementById('ar-pts').textContent = `${me.score} pts`;
-    document.getElementById('ar-acc').textContent  = `Precisión: ${acc}% · ${myCorrect} correctas`;
-
-    buildScoreList(students, myId, 'ar-list');
+function showAlumnoResults(){
+  get(ref(db,`sessions/${myPin}/students`)).then(snap=>{
+    const students=snap.val()||{};
+    const acc=myCorrect+myWrong?Math.round(myCorrect/(myCorrect+myWrong)*100):0;
+    document.getElementById('ar-avatar').textContent=myAvatar;
+    document.getElementById('ar-pts').textContent=`${myScore} pts`;
+    document.getElementById('ar-acc').textContent=`Precisión: ${acc}% · ${myCorrect} correctas`;
+    buildScoreList(students,myId,'ar-list');
     goto('screen-alumno-results');
   });
 }
 
-window.leaveGame = function() {
-  if (myId && myPin) remove(ref(db, `sessions/${myPin}/students/${myId}`));
-  goto('screen-home');
+window.leaveGame=function(){
+  if(myId&&myPin)remove(ref(db,`sessions/${myPin}/students/${myId}`));
+  if(alumnoConfigListener){off(ref(db,`sessions/${myPin}/config`));alumnoConfigListener=null;}
+  clearInterval(alumnoTimerInterval);goto('screen-home');
 };
 
-// ─────────────────────────────────────────────────────────────
-// BOOT
-// ─────────────────────────────────────────────────────────────
-loadFirebase();
+// ── PANEL DOCENTE ──────────────────────────────────────────────
+window.checkPanelLogin=function(){
+  const pwd=document.getElementById('panel-pwd').value;
+  if(pwd==='olimpiada'){document.getElementById('panel-pwd').value='';goto('screen-panel');loadPanel();}
+  else{showToast('❌ Contraseña incorrecta');}
+};
+
+window.switchTab=function(tabId){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    const ids=['tab-sesiones','tab-alumnos','tab-evolucion'];
+    b.classList.toggle('active',ids[i]===tabId);
+  });
+  document.querySelectorAll('.panel-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.getElementById('panel-session-detail').style.display='none';
+};
+
+function loadPanel(){
+  get(ref(db,'history')).then(snap=>{
+    const history=snap.val()||{};
+    renderSessions(history);
+    renderStudents(history);
+    renderEvolucion(history);
+  });
+}
+
+function renderSessions(history){
+  const el=document.getElementById('panel-sessions-list');
+  const sessions=Object.values(history).sort((a,b)=>b.savedAt-a.savedAt);
+  if(!sessions.length){el.innerHTML='<p class="text-muted text-center" style="padding:30px 0">No hay sesiones registradas aún</p>';return;}
+  el.innerHTML='';
+  sessions.forEach(s=>{
+    const cfg=s.config||{};
+    const students=Object.values(s.students||{});
+    const avgAcc=students.length?Math.round(students.reduce((a,x)=>a+(x.total?x.correct/x.total*100:0),0)/students.length):0;
+    const date=new Date(s.savedAt||cfg.date||0).toLocaleDateString('es-ES');
+    const card=document.createElement('div');card.className='session-card';
+    card.innerHTML=`
+      <div class="session-card-header">
+        <strong>${cfg.name||'Sesión sin nombre'}</strong>
+        <span class="session-badge">${LEVEL_NAMES[cfg.level]||cfg.level}</span>
+      </div>
+      <div style="font-size:.8rem;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap">
+        <span>📅 ${date}</span><span>👥 ${students.length} alumnos</span>
+        <span>❓ ${cfg.numq||'?'} preguntas</span><span>🎯 ${avgAcc}% precisión media</span>
+      </div>`;
+    card.onclick=()=>openDetail(s,cfg.pin||'');
+    el.appendChild(card);
+  });
+}
+
+function renderStudents(history){
+  const el=document.getElementById('panel-students-list');
+  // Aggregate all students across sessions
+  const studentMap={};
+  Object.values(history).forEach(s=>{
+    Object.values(s.students||{}).forEach(st=>{
+      const key=st.name.toLowerCase();
+      if(!studentMap[key]){studentMap[key]={name:st.name,avatar:st.avatar||'🦊',sessions:0,totalPts:0,totalCorrect:0,totalQ:0};}
+      studentMap[key].sessions++;
+      studentMap[key].totalPts+=st.score||0;
+      studentMap[key].totalCorrect+=st.correct||0;
+      studentMap[key].totalQ+=st.total||0;
+    });
+  });
+  const students=Object.values(studentMap).sort((a,b)=>b.totalPts-a.totalPts);
+  if(!students.length){el.innerHTML='<p class="text-muted text-center" style="padding:30px 0">No hay alumnos registrados aún</p>';return;}
+  el.innerHTML='';
+  students.forEach((s,i)=>{
+    const acc=s.totalQ?Math.round(s.totalCorrect/s.totalQ*100):0;
+    const medals=['🥇','🥈','🥉'];
+    const row=document.createElement('div');row.className='score-row';
+    row.innerHTML=`<span class="score-pos ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${medals[i]||i+1}</span>
+      <span class="score-avatar">${s.avatar}</span>
+      <span class="score-name">${s.name}<br><span style="font-size:.72rem;color:var(--muted);font-weight:400">${s.sessions} sesión${s.sessions!==1?'es':''} · ${acc}% precisión</span></span>
+      <span class="score-pts">${s.totalPts} pts</span>`;
+    el.appendChild(row);
+  });
+}
+
+function renderEvolucion(history){
+  const el=document.getElementById('panel-evo-list');
+  const sessions=Object.values(history).sort((a,b)=>(a.savedAt||0)-(b.savedAt||0));
+  const studentMap={};
+  sessions.forEach(s=>{
+    Object.values(s.students||{}).forEach(st=>{
+      const key=st.name.toLowerCase();
+      if(!studentMap[key]){studentMap[key]={name:st.name,avatar:st.avatar||'🦊',history:[]};}
+      const acc=st.total?Math.round(st.correct/st.total*100):0;
+      studentMap[key].history.push({acc,date:new Date(s.savedAt||0).toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'})});
+    });
+  });
+  const students=Object.values(studentMap).filter(s=>s.history.length>0).sort((a,b)=>a.name.localeCompare(b.name));
+  if(!students.length){el.innerHTML='<p class="text-muted text-center" style="padding:30px 0">No hay datos de evolución aún</p>';return;}
+  el.innerHTML='';
+  students.forEach(s=>{
+    const last=s.history[s.history.length-1].acc;
+    const first=s.history[0].acc;
+    const trend=last>first?'📈':last<first?'📉':'➡️';
+    const row=document.createElement('div');row.className='evo-student-row';
+    const dots=s.history.map(h=>`<span title="${h.date}: ${h.acc}%" style="font-size:.7rem;color:var(--muted)">${h.acc}%</span>`).join(' → ');
+    row.innerHTML=`<span style="font-size:1.4rem">${s.avatar}</span>
+      <div class="evo-bars">
+        <div style="font-weight:700;font-size:.9rem;margin-bottom:4px">${s.name} ${trend}</div>
+        <div style="font-size:.75rem;color:var(--muted);margin-bottom:5px">${dots}</div>
+        <div class="evo-bar-wrap"><div class="evo-bar" style="width:${last}%"></div></div>
+      </div>
+      <span style="font-weight:800;color:var(--gold);min-width:36px;text-align:right">${last}%</span>`;
+    el.appendChild(row);
+  });
+}
+
+window.openDetail=function(sessionData,pin){
+  document.getElementById('panel-session-detail').style.display='block';
+  const cfg=sessionData.config||{};
+  const students=Object.values(sessionData.students||{}).sort((a,b)=>b.score-a.score);
+  const date=new Date(sessionData.savedAt||0).toLocaleDateString('es-ES');
+  document.getElementById('detail-title').textContent=`${cfg.name||'Sesión'} · ${date}`;
+  const avgAcc=students.length?Math.round(students.reduce((a,x)=>a+(x.total?x.correct/x.total*100:0),0)/students.length):0;
+  document.getElementById('detail-stats').innerHTML=`
+    <div class="stat-box"><div class="stat-num">${students.length}</div><div class="stat-lbl">Alumnos</div></div>
+    <div class="stat-box"><div class="stat-num">${avgAcc}%</div><div class="stat-lbl">Precisión media</div></div>
+    <div class="stat-box"><div class="stat-num">${LEVEL_NAMES[cfg.level]||cfg.level||'—'}</div><div class="stat-lbl">Nivel</div></div>`;
+  buildScoreList(Object.fromEntries(students.map(s=>[s.id||s.name,s])),null,'detail-list');
+  document.getElementById('detail-csv-btn').onclick=()=>downloadCSVFromData(students,cfg.name||'sesion');
+  document.getElementById('panel-session-detail').scrollIntoView({behavior:'smooth'});
+};
+
+window.closeDetail=function(){document.getElementById('panel-session-detail').style.display='none';};
+
+function downloadCSVFromData(students,name){
+  const rows=[['Posición','Nombre','Puntuación','Correctas','Total','Precisión%','Índice IAO']];
+  students.forEach((s,i)=>{
+    const acc=s.total?Math.round(s.correct/s.total*100):0;
+    const iao=(acc*.6+Math.round(acc/10)*4).toFixed(1);
+    rows.push([i+1,s.name,s.score,s.correct||0,s.total||0,acc,iao]);
+  });
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=`olimpiadas_${name.replace(/\s+/g,'_')}_${new Date().toLocaleDateString('es-ES').replace(/\//g,'-')}.csv`;
+  a.click();
+}
 
 </script>
 </body>
